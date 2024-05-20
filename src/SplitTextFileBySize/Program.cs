@@ -1,4 +1,10 @@
-﻿namespace SplitTextFileBySize;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
+using System;
+using System.Linq;
+
+namespace SplitTextFileBySize;
 
 internal class Program
 {
@@ -45,13 +51,18 @@ internal class Program
             while (true)
             {
                 int cutLength = targetCurLength;
-
-                if (cutLength > allText.Length)
+                int minLength = cutLength;
+                if (minLength > allText.Length)
                 {
-                    cutLength = allText.Length;
+                    minLength = allText.Length;
                 }
-                string headText = allText.Substring(0, cutLength); // 高速化するためにヘッダー
+                string headText = allText.Substring(0, minLength); // 高速化するためにヘッダー
                 byte[] headerArray = System.Text.Encoding.GetEncoding(targetEncodingCodePage).GetBytes(headText);
+
+                if (cutLength > headerArray.Count())
+                {
+                    cutLength = headerArray.Count();
+                }
 
                 byte[] cutArray = new byte[cutLength];
                 Array.Copy(headerArray, 0, cutArray, 0, cutLength);
@@ -81,7 +92,7 @@ internal class Program
                         int lastNewLineIndex = cutStr.LastIndexOf('\n');
                         if (lastNewLineIndex != -1)
                         {
-                            cutStr = cutStr.Substring(0, lastNewLineIndex);
+                            cutStr = cutStr.Substring(0, lastNewLineIndex + 1);
                         }
                     }
                     fileTextList.Add(cutStr);
@@ -118,7 +129,7 @@ internal class Program
             var numberWidth = count.ToString().Length;
             Parallel.For(0, fileTextList.Count, i =>
             {
-                var newFilePath = getDivitionFileName(filePath, i+1, numberWidth);
+                var newFilePath = getDivitionFileName(filePath, i + 1, numberWidth);
 
                 // ファイルに書き込む
                 System.IO.File.WriteAllText(newFilePath, fileTextList[i], encode);
