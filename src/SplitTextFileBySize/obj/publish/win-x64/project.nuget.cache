@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "33wVJvy4dumgNm72bE9UQ2nsomEyWjr/MfPT7VYMF8S/CzJ24e1r95PyVJmHzmyhl+v+Nkh1aGmPMOv/dKih9Q==",
+  "dgSpecHash": "RoW5fVTuCPxeUhGTazN39hFjTOLm1QbWw7nhVM3ppJoq+KqN5/VsY+442dveIe4TzHGJFoP6WF5RvZeVBBn62A==",
   "success": true,
-  "projectFilePath": "C:\\Users\\master\\source\\repos\\SokutTextFileBySize\\SplitTextFileBySize\\SplitTextFileBySize.csproj",
+  "projectFilePath": "G:\\repogitory\\hm_split_textfile_bysize\\src\\SplitTextFileBySize\\SplitTextFileBySize.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\master\\.nuget\\packages\\microsoft.dotnet.ilcompiler\\8.0.5\\microsoft.dotnet.ilcompiler.8.0.5.nupkg.sha512",
     "C:\\Users\\master\\.nuget\\packages\\microsoft.net.illink.tasks\\8.0.5\\microsoft.net.illink.tasks.8.0.5.nupkg.sha512",

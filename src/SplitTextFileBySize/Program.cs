@@ -28,6 +28,13 @@ internal class Program
             // argの3番目にエンコード
             int targetEncodingCodePage = int.Parse(args[2]);
 
+            // argの4番目に改行モード
+            int targetLineMode = 0;
+            if (args.Length >= 4)
+            {
+                targetLineMode = int.Parse(args[3]);
+            }
+
             var encode = System.Text.Encoding.GetEncoding(targetEncodingCodePage);
             // ファイルを読み込む
             string allText = System.IO.File.ReadAllText(filePath, encode);
@@ -66,6 +73,16 @@ internal class Program
                     if (cutStr.EndsWith("\r"))
                     {
                         cutStr = cutStr.Substring(0, cutStr.Length - 1);
+                    }
+
+                    // 改行を考慮するモード
+                    if (targetLineMode == 1)
+                    {
+                        int lastNewLineIndex = cutStr.LastIndexOf('\n');
+                        if (lastNewLineIndex != -1)
+                        {
+                            cutStr = cutStr.Substring(0, lastNewLineIndex);
+                        }
                     }
                     fileTextList.Add(cutStr);
 

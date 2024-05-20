@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyCopyrightAttribute("2024 © Akitsugu Komiyama")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4d93e35718155ff0a434e99e3870650ad232d39d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+43855365777a84c2ffeca0ed9a2b304a96982c6c")]
 [assembly: System.Reflection.AssemblyProductAttribute("SplitTextFileBySize")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SplitTextFileBySize")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -1,0 +1,2 @@
+G:\repogitory\hm_split_textfile_bysize\src\SplitTextFileBySize\bin\Release\net8.0\publish\win-x64\SplitTextFileBySize.exe
+G:\repogitory\hm_split_textfile_bysize\src\SplitTextFileBySize\bin\Release\net8.0\publish\win-x64\SplitTextFileBySize.pdb

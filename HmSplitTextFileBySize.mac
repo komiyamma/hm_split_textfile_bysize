@@ -20,8 +20,9 @@ if (#nDivFileByteSize <= 0) {
 
 $strFileName = filename2;
 #nCodePage = codepage;
+#bLineConsider = 1; // ファイルを分割する際に、最寄りの改行を考慮する
 
-$commandline = sprintf(R"RAW("%s\%s" "%s" %d %d)RAW", currentmacrodirectory , "SplitTextFileBySize.exe", $strFileName, #nDivFileByteSize, #nCodePage);
+$commandline = sprintf(R"RAW("%s\%s" "%s" %d %d %d %d)RAW", currentmacrodirectory , "SplitTextFileBySize.exe", $strFileName, #nDivFileByteSize, #nCodePage, #bLineConsider);
 
 runex $commandline
     , 0     //sync   0:async, 1:sync
