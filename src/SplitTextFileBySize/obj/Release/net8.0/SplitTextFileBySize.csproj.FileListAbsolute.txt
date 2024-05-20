@@ -1,0 +1,14 @@
+C:\Users\master\source\repos\SokutTextFileBySize\SplitTextFileBySize\bin\Release\net8.0\SplitTextFileBySize.exe
+C:\Users\master\source\repos\SokutTextFileBySize\SplitTextFileBySize\bin\Release\net8.0\SplitTextFileBySize.deps.json
+C:\Users\master\source\repos\SokutTextFileBySize\SplitTextFileBySize\bin\Release\net8.0\SplitTextFileBySize.runtimeconfig.json
+C:\Users\master\source\repos\SokutTextFileBySize\SplitTextFileBySize\bin\Release\net8.0\SplitTextFileBySize.dll
+C:\Users\master\source\repos\SokutTextFileBySize\SplitTextFileBySize\bin\Release\net8.0\SplitTextFileBySize.pdb
+C:\Users\master\source\repos\SokutTextFileBySize\SplitTextFileBySize\obj\Release\net8.0\SplitTextFileBySize.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\master\source\repos\SokutTextFileBySize\SplitTextFileBySize\obj\Release\net8.0\SplitTextFileBySize.AssemblyInfoInputs.cache
+C:\Users\master\source\repos\SokutTextFileBySize\SplitTextFileBySize\obj\Release\net8.0\SplitTextFileBySize.AssemblyInfo.cs
+C:\Users\master\source\repos\SokutTextFileBySize\SplitTextFileBySize\obj\Release\net8.0\SplitTextFileBySize.csproj.CoreCompileInputs.cache
+C:\Users\master\source\repos\SokutTextFileBySize\SplitTextFileBySize\obj\Release\net8.0\SplitTextFileBySize.dll
+C:\Users\master\source\repos\SokutTextFileBySize\SplitTextFileBySize\obj\Release\net8.0\refint\SplitTextFileBySize.dll
+C:\Users\master\source\repos\SokutTextFileBySize\SplitTextFileBySize\obj\Release\net8.0\SplitTextFileBySize.pdb
+C:\Users\master\source\repos\SokutTextFileBySize\SplitTextFileBySize\obj\Release\net8.0\SplitTextFileBySize.genruntimeconfig.cache
+C:\Users\master\source\repos\SokutTextFileBySize\SplitTextFileBySize\obj\Release\net8.0\ref\SplitTextFileBySize.dll

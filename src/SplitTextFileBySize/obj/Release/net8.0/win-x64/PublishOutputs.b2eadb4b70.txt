@@ -1,0 +1,2 @@
+C:\Users\master\source\repos\SokutTextFileBySize\SokutTextFileBySize\bin\Release\net8.0\publish\win-x64\SokutTextFileBySize.exe
+C:\Users\master\source\repos\SokutTextFileBySize\SokutTextFileBySize\bin\Release\net8.0\publish\win-x64\SokutTextFileBySize.pdb

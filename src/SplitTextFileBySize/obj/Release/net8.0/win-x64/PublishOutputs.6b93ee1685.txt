@@ -1,0 +1,2 @@
+C:\Users\master\source\repos\SokutTextFileBySize\SplitTextFileBySize\bin\Release\net8.0\publish\win-x64\SplitTextFileBySize.exe
+C:\Users\master\source\repos\SokutTextFileBySize\SplitTextFileBySize\bin\Release\net8.0\publish\win-x64\SplitTextFileBySize.pdb
