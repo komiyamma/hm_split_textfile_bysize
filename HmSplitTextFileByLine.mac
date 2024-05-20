@@ -14,6 +14,11 @@ try {
         throw "ファイル名が付いているファイルのみ対象とします。";
     }
 
+    function outputAlert(err) {
+        let dll = loaddll("HmOutputPane.dll");
+        dll.dllFunc.Output(hidemaru.getCurrentWindowHandle(), err + "\r\n");
+    }
+
     function getPerChunk() {
         let answer = input("何行で分けますか?");
         let linesPerChunk = 5000;
@@ -93,13 +98,14 @@ try {
         const chunks = splitText(text, linesPerChunk);
         // 分割したテキストを分割してファイルに保存
         saveChunksToFiles(chunks);
+
+        outputAlert(chunks.length + "個のファイルに分割しました。");
     }
 
     main();
 
 } catch (err) {
-    let dll = loaddll("HmOutputPane.dll");
-    dll.dllFunc.Output(hidemaru.getCurrentWindowHandle(), err + "\r\n");
+    outputAlert(err);
 }
 
 
