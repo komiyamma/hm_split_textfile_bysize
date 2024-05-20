@@ -1,0 +1,2 @@
+# hm_split_textfile_bysize
+秀丸で今開いているファイルを、指定のキロバイト数で分割する
