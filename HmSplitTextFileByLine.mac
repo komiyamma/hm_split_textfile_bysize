@@ -1,5 +1,5 @@
 ﻿/*
- * HmSplitTextFileByLine v1.0.2.0
+ * HmSplitTextFileByLine v1.0.3.0
  *
  * Copyright (c) 2024 Akitsugu Komiyama
  * under the MIT License
@@ -48,6 +48,11 @@ try {
 
         for (let i = 0; i < textArray.length; i += linesPerChunk) {
             chunks.push(textArray.slice(i, i + linesPerChunk).join('\n'));
+        }
+
+        // chunksの最後の要素が""になってしまっていたら、それは連番ファイルとして保存しても無意味なので、カット
+        if (chunks[chunks.length-1] === "") {
+            chunks.pop();
         }
 
         return chunks;

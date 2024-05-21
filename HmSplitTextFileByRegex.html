@@ -1,0 +1,32 @@
+﻿<html>
+<body>
+
+<input type="text" name="regexp_text" id="regexp_id">
+
+<script>
+// input要素の参照を取得
+const input = document.getElementById('regexp_id');
+
+let prevValue = input.value; // 直前の入力値を保持する変数
+let idCallback=0;
+
+ // inputに何か入力すると、更新を検知できるようにする
+input.addEventListener('input', () => {
+    prevValue = "";
+});
+
+let sendValue = ""; // 実際に関数を実行した時の値
+setInterval(() => {
+    let curValue = input.value;
+    if (curValue != "" && curValue == prevValue && curValue != sendValue) {
+        sendValue = curValue;
+        window.chrome.webview.postMessage({funcid:idCallback, message:curValue});
+    }
+    prevValue = input.value; // 直前の入力値を更新
+}, 300); // 1秒後に実行
+
+</script>
+
+
+</body>
+</html>
