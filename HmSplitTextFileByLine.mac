@@ -1,5 +1,5 @@
 ﻿/*
- * HmSplitTextFileByLine v1.0.0.0
+ * HmSplitTextFileByLine v1.0.2.0
  *
  * Copyright (c) 2024 Akitsugu Komiyama
  * under the MIT License
@@ -19,14 +19,24 @@ try {
         dll.dllFunc.Output(hidemaru.getCurrentWindowHandle(), err + "\r\n");
     }
 
+    function throwCancelException() {
+        throw "実行をキャンセルしました。";
+    }
+
     function getPerChunk() {
         let answer = input("何行で分けますか?");
-        let linesPerChunk = 5000;
+        if (answer=="") { throwCancelException(); }
 
         try {
+            let linesPerChunk = 5000;
             linesPerChunk = Number(answer);
-        } catch (err) { }
-        return linesPerChunk;
+            if (Number.isNaN(linesPerChunk)) {
+                throwCancelException();
+            }
+            return linesPerChunk;
+        } catch (err) {
+            throwCancelException();
+        }
     }
 
     // 対象のテキストを該当の行数で割って配列にして返す
@@ -89,6 +99,19 @@ try {
         }
     }
 
+
+    function confirmExecution(text) {
+        let buttonOkCancel = 0x0001;
+        let dialogResult = message(text, "実行確認", buttonOkCancel);
+
+        // キャンセル・中止・いいえ などなら false
+        // (少々 messageダイアログのボタンタイプを変更してもいいようにここで柔らかく対応しておく)
+        if (dialogResult == 2 || dialogResult == 3 || dialogResult == 7) {
+            return false;
+        }
+        return true;
+    }
+
     function main() {
         // 何行に分割するかを得る
         let linesPerChunk = getPerChunk();
@@ -96,6 +119,12 @@ try {
         const text = hidemaru.getTotalText();
         // テキストを分割して配列に格納
         const chunks = splitText(text, linesPerChunk);
+
+        // 最後の実行確認
+        if (confirmExecution(chunks.length + "個のファイルに分割しますか？") == false) {
+            throwCancelException();
+        }
+
         // 分割したテキストを分割してファイルに保存
         saveChunksToFiles(chunks);
 
