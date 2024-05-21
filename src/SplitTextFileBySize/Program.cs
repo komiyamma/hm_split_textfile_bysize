@@ -67,6 +67,8 @@ internal class Program
                 string headText = allText.Substring(0, minLength); // 高速化するためにヘッダー
                 byte[] headerArray = System.Text.Encoding.GetEncoding(targetEncodingCodePage).GetBytes(headText);
 
+                // cutArrayのバッファーの長さが、headerArrayより長いなら、受け取りのバッファー自体をheaderArrayと同じにする。
+                // (cutArrayが余分に長いのは受け皿として不適切だから
                 if (cutLength > headerArray.Count())
                 {
                     cutLength = headerArray.Count();
