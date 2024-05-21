@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System;
 using System.Linq;
+using System.Text;
 
 namespace SplitTextFileBySize;
 
@@ -34,11 +35,14 @@ internal class Program
             // argの3番目にエンコード
             int targetEncodingCodePage = int.Parse(args[2]);
 
-            // argの4番目に改行モード
+            // argの4番目にBOMがあるかどうか
+            int hasBom = int.Parse(args[3]);
+
+            // argの5番目に改行モード
             int targetLineMode = 0;
-            if (args.Length >= 4)
+            if (args.Length >= 5)
             {
-                targetLineMode = int.Parse(args[3]);
+                targetLineMode = int.Parse(args[4]);
             }
 
             var encode = System.Text.Encoding.GetEncoding(targetEncodingCodePage);
@@ -139,13 +143,35 @@ internal class Program
             // ファイル作成は重いので、並列処理してしまう。
             var count = fileTextList.Count;
             var numberWidth = count.ToString().Length;
-            Parallel.For(0, fileTextList.Count, i =>
-            {
-                var newFilePath = getDivitionFileName(filePath, i + 1, numberWidth);
 
-                // ファイルに書き込む
-                System.IO.File.WriteAllText(newFilePath, fileTextList[i], encode);
-            });
+            // utf8でかつBOM無しの場合、BOM無しで
+            if (hasBom == 0 && targetEncodingCodePage == 65001)
+            {
+                var utf8nobom = new UTF8Encoding(false);
+                Parallel.For(0, fileTextList.Count, i =>
+                {
+                    var newFilePath = getDivitionFileName(filePath, i + 1, numberWidth);
+                    
+
+                    // 上書き保存でBOM無。
+                    using (StreamWriter sw = new StreamWriter(newFilePath, false, utf8nobom))
+                    {
+                        // ファイルに書き込む
+                        sw.Write(fileTextList[i]);
+                    }
+                });
+            }
+            // こっちは各種エンコーディングの主流に従う
+            else
+            {
+                Parallel.For(0, fileTextList.Count, i =>
+                {
+                    var newFilePath = getDivitionFileName(filePath, i + 1, numberWidth);
+
+                    // ファイルに書き込む
+                    System.IO.File.WriteAllText(newFilePath, fileTextList[i], encode);
+                });
+            }
 
             Console.WriteLine(count + "個のファイルに分割しました。");
         }

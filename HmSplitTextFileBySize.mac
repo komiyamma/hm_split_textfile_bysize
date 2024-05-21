@@ -1,5 +1,5 @@
 ﻿/*
- * HmSplitTextFileBySize v1.0.0.0
+ * HmSplitTextFileBySize v1.0.1.0
  *
  * Copyright (c) 2024 Akitsugu Komiyama
  * under the MIT License
@@ -20,9 +20,10 @@ if (#nDivFileByteSize <= 0) {
 
 $strFileName = filename2;
 #nCodePage = codepage;
+#bHasBom = bom; // BOMがあるかどうか。UTF8の時だけ考慮 (utf16の場合はこれは無視して勝手にBOM付ける)
 #bLineConsider = 1; // ファイルを分割する際に、最寄りの改行を考慮する
 
-$commandline = sprintf(R"RAW("%s\%s" "%s" %d %d %d %d)RAW", currentmacrodirectory , "SplitTextFileBySize.exe", $strFileName, #nDivFileByteSize, #nCodePage, #bLineConsider);
+$commandline = sprintf(R"RAW("%s\%s" "%s" %d %d %d %d)RAW", currentmacrodirectory , "SplitTextFileBySize.exe", $strFileName, #nDivFileByteSize, #nCodePage, #bHasBom, #bLineConsider);
 
 runex $commandline
     , 0     //sync   0:async, 1:sync

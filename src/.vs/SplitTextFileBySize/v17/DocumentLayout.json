@@ -3,6 +3,14 @@
   "WorkspaceRootPath": "G:\\repogitory\\hm_split_textfile_bysize\\src\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{548A1FC6-4726-4CD4-AC1F-1911AD2E6B3B}|SplitTextFileBySize\\SplitTextFileBySize.csproj|g:\\repogitory\\hm_split_textfile_bysize\\src\\splittextfilebysize\\splittextfilebysize.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{548A1FC6-4726-4CD4-AC1F-1911AD2E6B3B}|SplitTextFileBySize\\SplitTextFileBySize.csproj|solutionrelative:splittextfilebysize\\splittextfilebysize.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{548A1FC6-4726-4CD4-AC1F-1911AD2E6B3B}|SplitTextFileBySize\\SplitTextFileBySize.csproj|g:\\repogitory\\hm_split_textfile_bysize\\src\\splittextfilebysize\\splittextfilebysize.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
+      "RelativeMoniker": "D:0:0:{548A1FC6-4726-4CD4-AC1F-1911AD2E6B3B}|SplitTextFileBySize\\SplitTextFileBySize.csproj|solutionrelative:splittextfilebysize\\splittextfilebysize.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{548A1FC6-4726-4CD4-AC1F-1911AD2E6B3B}|SplitTextFileBySize\\SplitTextFileBySize.csproj|g:\\repogitory\\hm_split_textfile_bysize\\src\\splittextfilebysize\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{548A1FC6-4726-4CD4-AC1F-1911AD2E6B3B}|SplitTextFileBySize\\SplitTextFileBySize.csproj|solutionrelative:splittextfilebysize\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -23,7 +31,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
@@ -31,7 +39,32 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "SplitTextFileBySize",
+              "DocumentMoniker": "G:\\repogitory\\hm_split_textfile_bysize\\src\\SplitTextFileBySize\\SplitTextFileBySize.csproj",
+              "RelativeDocumentMoniker": "SplitTextFileBySize\\SplitTextFileBySize.csproj",
+              "ToolTip": "G:\\repogitory\\hm_split_textfile_bysize\\src\\SplitTextFileBySize\\SplitTextFileBySize.csproj",
+              "RelativeToolTip": "SplitTextFileBySize\\SplitTextFileBySize.csproj",
+              "ViewState": "AQIAAAAAAAAAAAAAAADwvwwAAAASAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-05-21T01:01:29.721Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "SplitTextFileBySize",
+              "DocumentMoniker": "G:\\repogitory\\hm_split_textfile_bysize\\src\\SplitTextFileBySize\\SplitTextFileBySize.csproj",
+              "RelativeDocumentMoniker": "SplitTextFileBySize\\SplitTextFileBySize.csproj",
+              "ToolTip": "G:\\repogitory\\hm_split_textfile_bysize\\src\\SplitTextFileBySize\\SplitTextFileBySize.csproj",
+              "RelativeToolTip": "SplitTextFileBySize\\SplitTextFileBySize.csproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-05-21T01:01:23.382Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\master\\source\\repos\\ConsoleApp6\\ConsoleApp6\\Program.cs",
               "ToolTip": "C:\\Users\\master\\source\\repos\\ConsoleApp6\\ConsoleApp6\\Program.cs",
@@ -41,20 +74,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "Program.cs",
               "DocumentMoniker": "G:\\repogitory\\hm_split_textfile_bysize\\src\\SplitTextFileBySize\\Program.cs",
               "RelativeDocumentMoniker": "SplitTextFileBySize\\Program.cs",
               "ToolTip": "G:\\repogitory\\hm_split_textfile_bysize\\src\\SplitTextFileBySize\\Program.cs",
               "RelativeToolTip": "SplitTextFileBySize\\Program.cs",
-              "ViewState": "AQIAAIYAAAAAAAAAAAAcwHEAAAA5AAAA",
+              "ViewState": "AQIAAIsAAAAAAAAAAAAIwJMAAAA/AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-05-20T00:40:36.486Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "SplitTextFileBySize.csproj",
               "DocumentMoniker": "C:\\Users\\master\\source\\repos\\SokutTextFileBySize\\SokutTextFileBySize\\SplitTextFileBySize.csproj",
               "ToolTip": "C:\\Users\\master\\source\\repos\\SokutTextFileBySize\\SokutTextFileBySize\\SplitTextFileBySize.csproj",
@@ -63,7 +96,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\master\\source\\repos\\SokutTextFileBySize\\SokutTextFileBySize\\Program.cs",
               "ToolTip": "C:\\Users\\master\\source\\repos\\SokutTextFileBySize\\SokutTextFileBySize\\Program.cs",
