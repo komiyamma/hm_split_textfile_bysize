@@ -1,41 +1,121 @@
 ﻿/*
- * HmSplitTextFileBySize v1.0.1.0
+ * HmSplitTextFileBySize v1.0.2.0
  *
  * Copyright (c) 2024 Akitsugu Komiyama
  * under the MIT License
  */
 
+hidemaruversion "9.25.99";
 
-$strAnswer = input("何キロバイトにファイルを分割しますか？");
-#nDivFileByteSize = val($strAnswer);
+jsmode "WebView2";
+js {
 
-#outputpane = loaddll("HmOutputPane.dll");
+try {
+    let bLineConsider = 1; // ファイルを分割する際に、最寄りの改行を考慮する
 
-if (#nDivFileByteSize <= 0) {
-    #ret=dllfunc(#outputpane, "Output",hidemaruhandle(0),"ファイルサイズが小さすぎます\r\n");
-    endmacro;
+    // ファイル名無しは対象にしない
+    if (!hidemaru.getFileFullPath()) {
+        throw "ファイル名が付いているファイルのみ対象とします。";
+    }
+
+    function outputAlert(err) {
+        let dll = loaddll("HmOutputPane.dll");
+        dll.dllFunc.Output(hidemaru.getCurrentWindowHandle(), err + "\r\n");
+    }
+
+    function throwCancelException() {
+        throw "実行をキャンセルしました。";
+    }
+
+    function getPerChunk() {
+        let answer = input("何キロバイトにファイルを分割しますか？");
+        if (answer=="") { throwCancelException(); }
+
+        try {
+            let nDivFileByteSize = 1024;
+            // 整数解釈でトライ
+            nDivFileByteSize = Number(answer);
+            if (Number.isNaN(nDivFileByteSize)) {
+                // 浮動小数解釈でトライ
+                nDivFileByteSize = parseFloat(answer);
+                if (Number.isNaN(nDivFileByteSize)) {
+                    throwCancelException();
+                }
+            }
+
+            nDivFileByteSize = nDivFileByteSize * 1024 - 3*bom(); // BOMがあれば3バイト減らしておく。
+            nDivFileByteSize = Math.floor(nDivFileByteSize);
+
+            // 20バイトより小さな単位でファイルを分けるのは無謀
+            if (nDivFileByteSize <= 20) {
+                throw "バイト数の指定が小さすぎます。";
+            }
+
+            return nDivFileByteSize;
+
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    // 分割数の事前予測
+    function getEstimatedDivCount(nDivFileByteSize) {
+        // 最低個数の割り出し。この個数以上になるのは確実
+        let nFileByteSize = existfile(hidemaru.getFileFullPath(), 2);
+        let nEstimatedNum = Math.floor(nFileByteSize / nDivFileByteSize) + 1;
+        return nEstimatedNum;
+    }
+
+    function confirmExecution(text) {
+        let buttonOkCancel = 0x0001;
+        let dialogResult = message(text, "実行確認", buttonOkCancel);
+
+        // キャンセル・中止・いいえ などなら false
+        // (少々 messageダイアログのボタンタイプを変更してもいいようにここで柔らかく対応しておく)
+        if (dialogResult == 2 || dialogResult == 3 || dialogResult == 7) {
+            return false;
+        }
+        return true;
+    }
+
+    function executeSplitFile(nDivFileByteSize) {
+        let commandLine = `"${currentmacrodirectory()}\\SplitTextFileBySize.exe" "${filename2()}" ${nDivFileByteSize} ${codepage()} ${bom()} ${bLineConsider}`;
+        runex (commandLine
+            , 0     //sync   0:async, 1:sync
+            , 0, "" //stdin  0:none, 1:auto, 2:<file, 3:(reserved),
+                    //       4:current content, 5:selection
+            , 8, "" //stdout 0:none, 1:auto, 2:>file 3:>>file, 4:new window,
+                    //       5:insert, 6:replace, 7:>output pane, 8:>>output pane
+            , 8, "" //stderr 0:none, 1:auto or >>stdout, 2-8:same as stdout's param
+            , 0, "" //folder 0:none, 1:current, 2:specify 3:(reserved), 4:exe's
+            , 2     //show   0:auto, 1:show, 2:hide, 3-13:ShellExecute()'s SW_*
+            , 1     //draw   0:draw, 1:no draw when stdout redirected
+            , 0     //encode 0:ansi, 2:utf-16, 6:utf-8
+            , 0     //extended flags
+        );
+    }
+
+    function main() {
+        // 何バイトに分割するかを得る
+        let nDivFileByteSize = getPerChunk();
+
+        // 分割数の事前予測
+        let nEstimatedDivCount = getEstimatedDivCount(nDivFileByteSize);
+
+        // 最後の実行確認
+        if (confirmExecution(nEstimatedDivCount + "個以上のファイルに分割されそうです。\r\n分割しますか？") == false) {
+            throwCancelException();
+        }
+
+        // 分割をしてファイルに保存
+        executeSplitFile(nDivFileByteSize);
+    }
+
+    main();
+
+} catch (err) {
+    outputAlert(err);
 }
 
-#nDivFileByteSize = #nDivFileByteSize * 1024 - 3; // BOMやらなにやら色々あるので3バイトくらい減らしておく。
 
-$strFileName = filename2;
-#nCodePage = codepage;
-#bHasBom = bom; // BOMがあるかどうか。UTF8の時だけ考慮 (utf16の場合はこれは無視して勝手にBOM付ける)
-#bLineConsider = 1; // ファイルを分割する際に、最寄りの改行を考慮する
-
-$commandline = sprintf(R"RAW("%s\%s" "%s" %d %d %d %d)RAW", currentmacrodirectory , "SplitTextFileBySize.exe", $strFileName, #nDivFileByteSize, #nCodePage, #bHasBom, #bLineConsider);
-
-runex $commandline
-    , 0     //sync   0:async, 1:sync
-    , 0, "" //stdin  0:none, 1:auto, 2:<file, 3:(reserved),
-            //       4:current content, 5:selection
-    , 8, "" //stdout 0:none, 1:auto, 2:>file 3:>>file, 4:new window,
-            //       5:insert, 6:replace, 7:>output pane, 8:>>output pane
-    , 8, "" //stderr 0:none, 1:auto or >>stdout, 2-8:same as stdout's param
-    , 0, "" //folder 0:none, 1:current, 2:specify 3:(reserved), 4:exe's
-    , 2     //show   0:auto, 1:show, 2:hide, 3-13:ShellExecute()'s SW_*
-    , 1     //draw   0:draw, 1:no draw when stdout redirected
-    , 0     //encode 0:ansi, 2:utf-16, 6:utf-8
-    , 0     //extended flags
-;
-
+} // js

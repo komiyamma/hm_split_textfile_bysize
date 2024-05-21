@@ -1,5 +1,7 @@
 # HmSplitTextFileBySize
 
+![Hidemaru 9.25](https://img.shields.io/badge/Hidemaru-v9.25-6479ff.svg)
+
 秀丸で今開いているファイルを、指定の「キロバイト数」で分割する
 
 ## インストール
@@ -15,6 +17,8 @@ HmSplitTextFileBySize.mac を 実行する。
 ---
 
 # HmSplitTextFileByLine
+
+![Hidemaru 9.25](https://img.shields.io/badge/Hidemaru-v9.25-6479ff.svg)
 
 秀丸で今開いているファイルを、指定の「行数」で分割する
 
