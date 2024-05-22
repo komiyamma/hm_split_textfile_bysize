@@ -11,12 +11,15 @@ hidemaruversion "9.25.99";
 
 setcompatiblemode 0x00020000; // ユーザーが利用する普段の検索条件を保存しておき、このマクロ終了後に元へと戻す。
 
+jsmode "WebView2";
+execjs currentmacrodirectory + @"\HmSplitTextFileByRegex.help.js";
+
 
 jsmode "WebView2";
 js {
 
 try {
-
+    /*
     function outputAlert(err) {
         let dll = loaddll("HmOutputPane.dll");
         dll.dllFunc.Output(hidemaru.getCurrentWindowHandle(), err + "\r\n");
@@ -29,6 +32,7 @@ try {
             throwCancelException();
         }
     }
+    */
 
     function throwInvalidDivideType() {
         throw "指定の分割方法は適切な数値ではありません。"
@@ -38,10 +42,10 @@ try {
         throw "実行をキャンセルしました。";
     }
 
-	// 1 :「そのワードでSplit」するタイプ、
-	// 2 :「ワードが登場すると、ワードを含めて次のファイル」にするタイプ、
-	// 3 :「ワードが登場すると、そのワードまでをファイルとし、次の文字から次のファイルとする」タイプ
-	function getDivideType() {
+    // 1 :「そのワードでSplit」するタイプ、
+    // 2 :「ワードが登場すると、ワードを含めて次のファイル」にするタイプ、
+    // 3 :「ワードが登場すると、そのワードまでをファイルとし、次の文字から次のファイルとする」タイプ
+    function getDivideType() {
 
         // ２番目の引数として分割タイプが外部から指定されているなら、数値に直して
         let answer = getarg(1);
@@ -71,75 +75,75 @@ try {
             throwInvalidDivideType();
         }
 
-	    return nDivideType;
-	}
+        return nDivideType;
+    }
 
-	function splitText(items, nDivideType) {
-	    let chunks = [];
+    function splitText(items, nDivideType) {
+        let chunks = [];
 
-	    let bottom_len = linelen_wcs(linecount2() - 1);
-	    let prevCol = 0;
-	    let prevLine = 1;
+        let bottom_len = linelen_wcs(linecount2() - 1);
+        let prevCol = 0;
+        let prevLine = 1;
 
-	    // タイプ①＝splitタイプであれば、間の文字列部分は採用しないのだから、(col1,line1)までを採用し、次は(col2, line2)となる。
-	    if (nDivideType == 1) {
+        // タイプ①＝splitタイプであれば、間の文字列部分は採用しないのだから、(col1,line1)までを採用し、次は(col2, line2)となる。
+        if (nDivideType == 1) {
 
-	        for (let item of items) {
-	            console.log(JSON.stringify(item) + "\r\n");
+            for (let item of items) {
+                console.log(JSON.stringify(item) + "\r\n");
 
-	            let text = gettext_wcs(prevCol, prevLine, item.col1, item.line1, 1);
+                let text = gettext_wcs(prevCol, prevLine, item.col1, item.line1, 1);
 
-	            chunks.push(text);
+                chunks.push(text);
 
-	            prevCol = item.col2;
-	            prevLine = item.line2;
-	        }
-	        let text = gettext_wcs(prevCol, prevLine, bottom_len + 1, linecount2() + 1, 1);
-	        chunks.push(text);
-	    }
+                prevCol = item.col2;
+                prevLine = item.line2;
+            }
+            let text = gettext_wcs(prevCol, prevLine, bottom_len + 1, linecount2() + 1, 1);
+            chunks.push(text);
+        }
 
-	    // ワード登場が新たなファイルとなるタイプ②なのであれば、(col1,line1)までを採用し、次は(col1, line1)からとなる。
-	    else if (nDivideType == 2) {
+        // ワード登場が新たなファイルとなるタイプ②なのであれば、(col1,line1)までを採用し、次は(col1, line1)からとなる。
+        else if (nDivideType == 2) {
 
-	        for (let item of items) {
-	            console.log(JSON.stringify(item) + "\r\n");
+            for (let item of items) {
+                console.log(JSON.stringify(item) + "\r\n");
 
-	            let text = gettext_wcs(prevCol, prevLine, item.col1, item.line1, 1);
+                let text = gettext_wcs(prevCol, prevLine, item.col1, item.line1, 1);
 
-	            chunks.push(text);
+                chunks.push(text);
 
-	            prevCol = item.col1;
-	            prevLine = item.line1;
-	        }
-	        let text = gettext_wcs(prevCol, prevLine, bottom_len + 1, linecount2() + 1, 1);
-	        chunks.push(text);
-	    }
+                prevCol = item.col1;
+                prevLine = item.line1;
+            }
+            let text = gettext_wcs(prevCol, prevLine, bottom_len + 1, linecount2() + 1, 1);
+            chunks.push(text);
+        }
 
-	    // ワード登場するまでが前のファイルとなるタイプ③なのであれば、(col2,line2)までを採用し、次は(col2, line2)からとなる。
-	    else if (nDivideType == 3) {
+        // ワード登場するまでが前のファイルとなるタイプ③なのであれば、(col2,line2)までを採用し、次は(col2, line2)からとなる。
+        else if (nDivideType == 3) {
 
-	        for (let item of items) {
-	            console.log(JSON.stringify(item) + "\r\n");
+            for (let item of items) {
+                console.log(JSON.stringify(item) + "\r\n");
 
-	            let text = gettext_wcs(prevCol, prevLine, item.col2, item.line2, 1);
+                let text = gettext_wcs(prevCol, prevLine, item.col2, item.line2, 1);
 
-	            chunks.push(text);
+                chunks.push(text);
 
-	            prevCol = item.col12
-	            prevLine = item.line12
-	        }
-	        let text = gettext_wcs(prevCol, prevLine, bottom_len + 1, linecount2() + 1, 1);
-	        chunks.push(text);
-	    }
+                prevCol = item.col12
+                prevLine = item.line12
+            }
+            let text = gettext_wcs(prevCol, prevLine, bottom_len + 1, linecount2() + 1, 1);
+            chunks.push(text);
+        }
 
 
-	    // chunksの最後の要素が""になってしまっていたら、それは連番ファイルとして保存しても無意味なので、カット
-	    if (chunks[chunks.length - 1] === "") {
-	        chunks.pop();
-	    }
+        // chunksの最後の要素が""になってしまっていたら、それは連番ファイルとして保存しても無意味なので、カット
+        if (chunks[chunks.length - 1] === "") {
+            chunks.pop();
+        }
 
-	    return chunks;
-	}
+        return chunks;
+    }
 
     function getPerChunk() {
 
@@ -150,39 +154,39 @@ try {
             needConfirm = false;
         }
 
-		deletecolormarkerall(findmarker());
-		gofiletop();
-		const op_casesense = 0x00000002; // 秀丸のsearchdown関数のcasesenseと同じ意味
-		const op_regular = 0x00000010; // 秀丸のsearchdown関数のregularと同じ意味
-		const op_hilight = 0x00003800; // 秀丸のsearchdown関数のhilightと同じ意味
-		const op_loop = 0x01000000; // 秀丸のsearchdown関数のloopと同じ意味
+        deletecolormarkerall(findmarker());
+        gofiletop();
+        const op_casesense = 0x00000002; // 秀丸のsearchdown関数のcasesenseと同じ意味
+        const op_regular = 0x00000010; // 秀丸のsearchdown関数のregularと同じ意味
+        const op_hilight = 0x00003800; // 秀丸のsearchdown関数のhilightと同じ意味
+        const op_loop = 0x01000000; // 秀丸のsearchdown関数のloopと同じ意味
 
         // 指定がないなら視覚的にもダイアログを出す
         if (answer == "") {
-    		searchdialog("分離したい箇所のパターンの正規表現の入力", op_regular | op_hilight | op_casesense | op_loop);
+            searchdialog("分離したい箇所のパターンの正規表現の入力", op_regular | op_hilight | op_casesense | op_loop);
 
         // 指定があるなら視覚的には出さない
         } else {
-    		searchdown("分離したい箇所のパターンの正規表現の入力", op_regular | op_hilight | op_casesense | op_loop);
+            searchdown("分離したい箇所のパターンの正規表現の入力", op_regular | op_hilight | op_casesense | op_loop);
         }
-		colormarkerallfound();
+        colormarkerallfound();
 
-		let getcolormarker_arg_request_json = {
-		    unit: "wcs",
-		    layer: findmarker(),
-		    items: [
-		        { line1: "*", col1: "*", line2: "*", col2: "*", },
-		    ]
-		};
+        let getcolormarker_arg_request_json = {
+            unit: "wcs",
+            layer: findmarker(),
+            items: [
+                { line1: "*", col1: "*", line2: "*", col2: "*", },
+            ]
+        };
 
-		let info = getcolormarker(getcolormarker_arg_request_json);
-		if (info.items) {
-		    let items = info.items;
+        let info = getcolormarker(getcolormarker_arg_request_json);
+        if (info.items) {
+            let items = info.items;
             return [items, needConfirm];
-		} else {
+        } else {
             throw "分離情報取得でエラーが発生しました。";
         }
-	}
+    }
 
     function confirmExecution(text) {
         let buttonOkCancel = 0x0001;
@@ -244,9 +248,12 @@ try {
         }
     }
 
+    var nDivideType_HmSplitTextFileByRegex = -1; // 広範に非同期でも参照されるため、varにして重ならない変数名で
     function main() {
 
         throwIfNotFileName();
+
+        showHelp();
 
         // 何行に分割するかを得る
         let [colorMarkerItems, needConfirm] = getPerChunk();
@@ -268,6 +275,7 @@ try {
 
         outputAlert(chunks.length + "個のファイルに分割しました。");
     }
+
 
     main()
 

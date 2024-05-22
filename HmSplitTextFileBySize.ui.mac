@@ -93,7 +93,7 @@ debuginfo(2);
         }
 
         // レンダリングペインに対して、現在のファイルのバイト数を送信する。
-        function updateAllLine_HmSplitTextFileBySize() {
+        function updateTextInfo_HmSplitTextFileBySize() {
             let readyState = renderpanecommand({ target: strTargetLabel, get: "readyState" });
             if (readyState == "complete") {
                  let nFileByteSize = getCurrentFileSize();
@@ -153,7 +153,7 @@ debuginfo(2);
         if (typeof (idIntervalUpdate_HmSplitTextFileBySize) != "undefined") {
             hidemaru.clearInterval(idIntervalUpdate_HmSplitTextFileBySize);
         }
-        idIntervalUpdate_HmSplitTextFileBySize = hidemaru.setInterval(updateAllLine_HmSplitTextFileBySize, 2000);
+        idIntervalUpdate_HmSplitTextFileBySize = hidemaru.setInterval(updateTextInfo_HmSplitTextFileBySize, 2000);
 
     } catch(err) {
         outputAlert(err);

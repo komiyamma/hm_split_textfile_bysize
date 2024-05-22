@@ -1,5 +1,5 @@
 ﻿/*
- * HmSplitTextFileByLine v1.0.3.0
+ * HmSplitTextFileByRegex v1.0.3.0
  *
  * Copyright (c) 2024 Akitsugu Komiyama
  * under the MIT License
@@ -29,12 +29,12 @@ js {
         const currentmacrodir = currentmacrodirectory();
 
         // ラベルはこのマクロ独自にしておく
-        const strTargetLabel = "HmSplitTextFileByLine";
+        const strTargetLabel = "HmSplitTextFileByRegex";
 
         // レンダリングペインを開く
         function openRenderPane() {
             // カレントマクロフォルダのhtmlファイルを使う
-            const absoluteUrl = new URL(currentmacrodir + "\\" + "HmSplitTextFileByLine.ui.html").href;
+            const absoluteUrl = new URL(currentmacrodir + "\\" + "HmSplitTextFileByRegex.ui.html").href;
 
 
             const json_arg = {
@@ -48,18 +48,18 @@ js {
         }
 
         // 本当にレンダリングペインが開いて準備がととのったのかのチェック
-        let checkCount_HmSplitTextFileByLine = 0;
-        function checkComplete_HmSplitTextFileByLine() {
+        let checkCount_HmSplitTextFileByRegex = 0;
+        function checkComplete_HmSplitTextFileByRegex() {
             let readyState = renderpanecommand({ target: strTargetLabel, get: "readyState" });
             if (readyState == "complete") {
-                hidemaru.clearInterval(idIntervalInitialize_HmSplitTextFileByLine);
-                onRenderPaneShown_HmSplitTextFileByLine();
+                hidemaru.clearInterval(idIntervalInitialize_HmSplitTextFileByRegex);
+                onRenderPaneShown_HmSplitTextFileByRegex();
             }
         }
 
         // レンダリングペインに対して、現在の全体の行数を送信する。
         let prevUpdateCount = 0;
-        function updateTextInfo_HmSplitTextFileByLine() {
+        function updateTextInfo_HmSplitTextFileByRegex() {
             let readyState = renderpanecommand({ target: strTargetLabel, get: "readyState" });
             if (readyState == "complete") {
                 // 負荷を軽くするために、「編集ペインのテキスト」に変化があると値が更新される getUpdateCountを利用する。
@@ -79,10 +79,10 @@ js {
         }
 
         // レンダリングペインが完全に表示されたら、
-        // このJS内にある「onInputHtmlButtonClick_HmSplitTextFileByLine」関数をレンダリングペインから呼び出せるように関数のIDを渡す。
+        // このJS内にある「onInputHtmlButtonClick_HmSplitTextFileByRegex」関数をレンダリングペインから呼び出せるように関数のIDを渡す。
         // また、「レンダリングペインを操作するのよ～」ということがわかりやすいように、レンダリングペイン側にフォーカスを移す
-        function onRenderPaneShown_HmSplitTextFileByLine() {
-            let idCallback = hidemaru.getFunctionId(onInputHtmlButtonClick_HmSplitTextFileByLine);
+        function onRenderPaneShown_HmSplitTextFileByRegex() {
+            let idCallback = hidemaru.getFunctionId(onInputHtmlButtonClick_HmSplitTextFileByRegex);
             renderpanecommand({
                 target: strTargetLabel,
                 uri: 'javascript:idCallback=' + idCallback + ';',
@@ -94,8 +94,8 @@ js {
         }
 
         // HTML側で「ボタン」を押すと、これが呼ばれる
-        function onInputHtmlButtonClick_HmSplitTextFileByLine(json_text) {
-            hidemaru.clearInterval(idIntervalUpdate_HmSplitTextFileByLine);
+        function onInputHtmlButtonClick_HmSplitTextFileByRegex(json_text) {
+            hidemaru.clearInterval(idIntervalUpdate_HmSplitTextFileByRegex);
             renderpanecommand({
                 target: strTargetLabel,
                 show: 0,
@@ -103,8 +103,8 @@ js {
 
             // json_textの状態で、inputフィールドに入っているテキストが渡ってくるので、その数値を渡す
             let json_obj = JSON.parse(json_text);
-            let linesPerChunk = json_obj.input_1;
-            hidemaru.postExecMacroFile( currentmacrodir + "\\" + "HmSplitTextFileByLine.main.mac", linesPerChunk );
+            let divtype = json_obj.divtype;
+            hidemaru.postExecMacroFile( currentmacrodir + "\\" + "HmSplitTextFileByRegex.main.mac", linesPerChunk );
         }
 
         openRenderPane();
@@ -114,18 +114,18 @@ js {
 
         // 最初のレンダリングペインCompleteチェック用のものは、比較的細やかにチェックする。
         // これは表示しをえたら直ぐにIntervalが止まるのでIntervalが小さくでも大丈夫
-        var idIntervalInitialize_HmSplitTextFileByLine;
-        if (typeof (idIntervalInitialize_HmSplitTextFileByLine) != "undefined") {
-            hidemaru.clearInterval(idIntervalInitialize_HmSplitTextFileByLine);
+        var idIntervalInitialize_HmSplitTextFileByRegex;
+        if (typeof (idIntervalInitialize_HmSplitTextFileByRegex) != "undefined") {
+            hidemaru.clearInterval(idIntervalInitialize_HmSplitTextFileByRegex);
         }
-        idIntervalInitialize_HmSplitTextFileByLine = hidemaru.setInterval(checkComplete_HmSplitTextFileByLine, 300);
+        idIntervalInitialize_HmSplitTextFileByRegex = hidemaru.setInterval(checkComplete_HmSplitTextFileByRegex, 300);
 
         // 全体の行数の変化にはおおらかに対応する。
-        var idIntervalUpdate_HmSplitTextFileByLine;
-        if (typeof (idIntervalUpdate_HmSplitTextFileByLine) != "undefined") {
-            hidemaru.clearInterval(idIntervalUpdate_HmSplitTextFileByLine);
+        var idIntervalUpdate_HmSplitTextFileByRegex;
+        if (typeof (idIntervalUpdate_HmSplitTextFileByRegex) != "undefined") {
+            hidemaru.clearInterval(idIntervalUpdate_HmSplitTextFileByRegex);
         }
-        idIntervalUpdate_HmSplitTextFileByLine = hidemaru.setInterval(updateTextInfo_HmSplitTextFileByLine, 2000);
+        idIntervalUpdate_HmSplitTextFileByRegex = hidemaru.setInterval(updateTextInfo_HmSplitTextFileByRegex, 2000);
 
     } catch(err) {
         outputAlert(err);

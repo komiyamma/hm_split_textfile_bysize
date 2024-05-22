@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HmSplitTextFileByRegex</title>
+</head>
+<body>
+<span id="help_1">「分割に利用するワード」で検索してください。</span>
+<div id="button_list">
+<br>
+&nbsp;<button id="button_1">タイプ１で分割する</button><br>
+<br>
+&nbsp;<button id="button_2">タイプ２で分割する</button><br>
+<br>
+&nbsp;<button id="button_3">タイプ３で分割する</button><br>
+
+&nbsp;&nbsp;<span id="info_1"></span>
+</div>
+
+<script>
+    // ボタンを取得
+    const btn_1 = document.getElementById("button_1");
+    const btn_2 = document.getElementById("button_2");
+    const btn_3 = document.getElementById("button_3");
+    const info_1 = document.getElementById("info_1");
+
+    let idCallback=0;
+    let nDivFileCount = 1;
+
+    window.onload = () => { input_1.focus(); }
+
+    // ボタンがクリックされた時の処理。行数をjsonテキストにして、秀丸マクロのjsmode内関数を呼び出す(引数にjson_text)を渡す
+    btn_1.addEventListener("click", function() {
+        let message_obj = {
+            divtype: 1,
+        };
+        let json_text = JSON.stringify(message_obj);
+        window.chrome.webview.postMessage({funcid:idCallback, message:json_text});
+    });
+    btn_2.addEventListener("click", function() {
+        let message_obj = {
+            divtype: 2,
+        };
+        let json_text = JSON.stringify(message_obj);
+        window.chrome.webview.postMessage({funcid:idCallback, message:json_text});
+    });
+    btn_3.addEventListener("click", function() {
+        let message_obj = {
+            divtype: 3,
+        };
+        let json_text = JSON.stringify(message_obj);
+        window.chrome.webview.postMessage({funcid:idCallback, message:json_text});
+    });
+
+    // 分割ファイル数の予測値を0.5秒に一度info_1内に反映する
+    setInterval(() => {
+        if (input_1.value) {
+            try {
+                info_1.innerText = nDivFileCount + " 個に分割予定";
+            } catch(err) {}
+        }
+    }, 500);
+
+</script>
+</body>
+</html>
