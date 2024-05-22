@@ -1,0 +1,19 @@
+﻿/*
+ * HmSplitTextFileByLine v1.0.3.0
+ *
+ * Copyright (c) 2024 Akitsugu Komiyama
+ * under the MIT License
+ */
+
+hidemaruversion "9.25.99";
+
+jsmode "WebView2";
+
+js {
+
+    let strSearchRegexp = "改ページ"; // ファイル分離に使う用語を指定
+    let nDivisionType = 1;             // 分離タイプは1-3
+
+    hidemaru.postExecMacroFile( currentmacrodirectory() + "\\" + "HmSplitTextFileByRegex.main.mac", strSearchRegexp, nDivisionType );
+}
+
