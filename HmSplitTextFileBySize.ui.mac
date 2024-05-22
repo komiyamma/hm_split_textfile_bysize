@@ -153,7 +153,7 @@ debuginfo(2);
         if (typeof (idIntervalUpdate_HmSplitTextFileBySize) != "undefined") {
             hidemaru.clearInterval(idIntervalUpdate_HmSplitTextFileBySize);
         }
-        idIntervalUpdate_HmSplitTextFileBySize = hidemaru.setInterval(updateAllLine_HmSplitTextFileBySize, 3000);
+        idIntervalUpdate_HmSplitTextFileBySize = hidemaru.setInterval(updateAllLine_HmSplitTextFileBySize, 2000);
 
     } catch(err) {
         outputAlert(err);

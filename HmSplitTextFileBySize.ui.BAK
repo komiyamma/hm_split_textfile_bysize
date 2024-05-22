@@ -4,7 +4,7 @@
     <title>HmSplitTextFileBySize</title>
 </head>
 <body>
-「<b>何キロバイト</b>」単位でファイルを分割しますか？:<br>
+「<b>何キロバイト</b>」単位で、<br>ファイルを分割しますか？:<br>
 &nbsp;<input type="text" id="input_1"><br>
 <br>
 &nbsp;<button id="button_1">分割する</button><br>

@@ -21,6 +21,8 @@
     let nAllByteSize = 1;
     let nDivFileCount = 1;
 
+    window.onload = () => { input_1.focus(); }
+
     // ボタンがクリックされた時の処理。行数をjsonテキストにして、秀丸マクロのjsmode内関数を呼び出す(引数にjson_text)を渡す
     btn_1.addEventListener("click", function() {
         let message_obj = {
