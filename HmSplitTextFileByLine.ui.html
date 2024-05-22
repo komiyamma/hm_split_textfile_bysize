@@ -4,12 +4,12 @@
     <title>HmSplitTextFileByLine</title>
 </head>
 <body>
-何行単位でファイルを分割しますか？:<br>
+「<b>何行</b>」単位で、<br>ファイルを分割しますか？:<br>
 &nbsp;<input type="text" id="input_1"><br>
 <br>
 &nbsp;<button id="button_1">分割する</button><br>
 <br>
-&nbsp;(<span id="info_1"></span>)
+&nbsp;&nbsp;<span id="info_1"></span>
 
 <script>
     // ボタンを取得
@@ -37,7 +37,7 @@
                 let nInputDivLineCount = Number(input_1.value);
                 if (nInputDivLineCount > 0) {
                      nDivFileCount = Math.ceil(nAllLineCount / nInputDivLineCount);
-                     info_1.innerText = nDivFileCount + " 個のファイルに分割予定。";
+                     info_1.innerText = nDivFileCount + " 個のファイルに分割予定";
                 }
             } catch(err) {}
         }

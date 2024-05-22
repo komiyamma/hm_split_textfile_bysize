@@ -10,7 +10,6 @@ hidemaruversion "9.25.99";
 jsmode "WebView2";
 
 js {
-
     try {
         function outputAlert(err) {
             let dll = loaddll("HmOutputPane.dll");
@@ -72,7 +71,7 @@ js {
                     let len = text.split("\r\n").length;
                     renderpanecommand({
                         target: strTargetLabel,
-                        uri: 'javascript:iAllLine=' + len + ';',
+                        uri: 'javascript:nAllLineCount=' + len + ';',
                     });
                     prevUpdateCount = curUpdateCount;
                 }

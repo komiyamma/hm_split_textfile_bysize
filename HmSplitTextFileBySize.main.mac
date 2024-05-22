@@ -43,18 +43,17 @@ try {
         if (answer=="") { throwCancelException(); }
 
         try {
-            let nDivFileByteSize = 1024;
             // 整数解釈でトライ
-            nDivFileByteSize = Number(answer);
-            if (Number.isNaN(nDivFileByteSize)) {
+            let nDivFileKiroByteSize = Number(answer);
+            if (Number.isNaN(nDivFileKiroByteSize)) {
                 // 浮動小数解釈でトライ
-                nDivFileByteSize = parseFloat(answer);
-                if (Number.isNaN(nDivFileByteSize)) {
+                nDivFileKiroByteSize = parseFloat(answer);
+                if (Number.isNaN(nDivFileKiroByteSize)) {
                     throwCancelException();
                 }
             }
 
-            nDivFileByteSize = nDivFileByteSize * 1024 - 3*bom(); // BOMがあれば3バイト減らしておく。
+            let nDivFileByteSize = nDivFileKiroByteSize * 1024 - 3*bom(); // BOMがあれば3バイト減らしておく。
             nDivFileByteSize = Math.floor(nDivFileByteSize);
 
             // 20バイトより小さな単位でファイルを分けるのは無謀

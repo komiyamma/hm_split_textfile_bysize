@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>HmSplitTextFileByLine</title>
+    <title>HmSplitTextFileBySize</title>
 </head>
 <body>
-「<b>何行</b>」単位でファイルを分割しますか？:<br>
+「<b>何キロバイト</b>」単位で、<br>ファイルを分割しますか？:<br>
 &nbsp;<input type="text" id="input_1"><br>
 <br>
 &nbsp;<button id="button_1">分割する</button><br>
@@ -18,7 +18,7 @@
     const info_1 = document.getElementById("info_1");
 
     let idCallback=0;
-    let nAllLineCount = 1;
+    let nAllByteSize = 1;
     let nDivFileCount = 1;
 
     // ボタンがクリックされた時の処理。行数をjsonテキストにして、秀丸マクロのjsmode内関数を呼び出す(引数にjson_text)を渡す
@@ -34,10 +34,10 @@
     setInterval(() => {
         if (input_1.value) {
             try {
-                let nInputDivLineCount = Number(input_1.value);
-                if (nInputDivLineCount > 0) {
-                     nDivFileCount = Math.ceil(nAllLineCount / nInputDivLineCount);
-                     info_1.innerText = nDivFileCount + " 個のファイルに分割予定";
+                let nInputDivKiroByteSize = Number(input_1.value);
+                if (nInputDivKiroByteSize > 0) {
+                     nDivFileCount = Math.ceil(nAllByteSize / (nInputDivKiroByteSize*1024));
+                     info_1.innerText = nDivFileCount + " 個以上のファイルに分割予定";
                 }
             } catch(err) {}
         }
