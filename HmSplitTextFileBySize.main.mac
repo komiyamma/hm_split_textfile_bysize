@@ -110,11 +110,11 @@ try {
         // 何バイトに分割するかを得る
         let [nDivFileByteSize, needConfirm] = getPerChunk();
 
-        // 分割数の事前予測
-        let nEstimatedDivCount = getEstimatedDivCount(nDivFileByteSize);
-
         // 最後の実行確認
         if (needConfirm) {
+            // 分割数の事前予測
+            let nEstimatedDivCount = getEstimatedDivCount(nDivFileByteSize);
+
             if (confirmExecution(nEstimatedDivCount + "個以上のファイルに分割されそうです。\r\n分割しますか？") == false) {
                 throwCancelException();
             }
