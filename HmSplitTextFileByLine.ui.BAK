@@ -18,26 +18,26 @@
     const num_division = document.getElementById("num_division");
 
     let idCallback=0;
-    let iAllLine = 1;
-    let iDivCount = 1;
+    let nAllLineCount = 1;
+    let nDivFileCount = 1;
 
-    // ボタンがクリックされた時の処理
+    // ボタンがクリックされた時の処理。行数をjsonテキストにして、秀丸マクロのjsmode内関数を呼び出す(引数にjson_text)を渡す
     btn_1.addEventListener("click", function() {
         let message_obj = {
             input_1: input_1.value,
         };
-        let json = JSON.stringify(message_obj);
-        window.chrome.webview.postMessage({funcid:idCallback, message:json});
+        let json_text = JSON.stringify(message_obj);
+        window.chrome.webview.postMessage({funcid:idCallback, message:json_text});
     });
 
-        // iAllLineの値を1秒に一度num_division内に反映する
+    // 分割ファイル数の予測値を0.5秒に一度num_division内に反映する
     setInterval(() => {
         if (input_1.value) {
             try {
-                let inputDivLine = Number(input_1.value);
-                if (inputDivLine > 0) {
-                     iDivCount = Math.ceil(iAllLine / inputDivLine);
-                     num_division.innerText = iDivCount + " 個のファイルに分割予定。";
+                let nInputDivLineCount = Number(input_1.value);
+                if (nInputDivLineCount > 0) {
+                     nDivFileCount = Math.ceil(nAllLineCount / nInputDivLineCount);
+                     num_division.innerText = nDivFileCount + " 個のファイルに分割予定。";
                 }
             } catch(err) {}
         }

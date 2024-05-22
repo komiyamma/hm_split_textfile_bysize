@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HmSplitTextFileByLine</title>
+</head>
+<body>
+何行単位でファイルを分割しますか？:<br>
+&nbsp;<input type="text" id="input_1"><br>
+<br>
+&nbsp;<button id="button_1">分割する</button><br>
+<br>
+&nbsp;(<span id="info_1"></span>)
+
+<script>
+    // ボタンを取得
+    const btn_1 = document.getElementById("button_1");
+    const input_1 = document.getElementById("input_1");
+    const info_1 = document.getElementById("info_1");
+
+    let idCallback=0;
+    let nAllLineCount = 1;
+    let nDivFileCount = 1;
+
+    // ボタンがクリックされた時の処理。行数をjsonテキストにして、秀丸マクロのjsmode内関数を呼び出す(引数にjson_text)を渡す
+    btn_1.addEventListener("click", function() {
+        let message_obj = {
+            input_1: input_1.value,
+        };
+        let json_text = JSON.stringify(message_obj);
+        window.chrome.webview.postMessage({funcid:idCallback, message:json_text});
+    });
+
+    // 分割ファイル数の予測値を0.5秒に一度info_1内に反映する
+    setInterval(() => {
+        if (input_1.value) {
+            try {
+                let nInputDivLineCount = Number(input_1.value);
+                if (nInputDivLineCount > 0) {
+                     nDivFileCount = Math.ceil(nAllLineCount / nInputDivLineCount);
+                     info_1.innerText = nDivFileCount + " 個のファイルに分割予定。";
+                }
+            } catch(err) {}
+        }
+    }, 500);
+
+</script>
+</body>
+</html>
