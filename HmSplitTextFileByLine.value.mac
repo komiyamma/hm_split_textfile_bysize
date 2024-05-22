@@ -7,6 +7,6 @@
 
 hidemaruversion "9.25.99";
 
-#linesPerChunk = 500;
+#linesPerChunk = 500; // 500行でファイルを分割する
 
 execmacro currentmacrodirectory + @"\HmSplitTextFileByLine.main.mac", str(#linesPerChunk);
