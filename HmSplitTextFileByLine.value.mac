@@ -7,6 +7,12 @@
 
 hidemaruversion "9.25.99";
 
-#linesPerChunk = 500; // 500行でファイルを分割する
+jsmode "WebView2";
 
-execmacro currentmacrodirectory + @"\HmSplitTextFileByLine.main.mac", str(#linesPerChunk);
+js {
+
+    let linesPerChunk = 500; // 500行ごとにファイルを分割する
+
+    hidemaru.postExecMacroFile( currentmacrodirectory() + "\\" + "HmSplitTextFileByLine.main.mac", linesPerChunk );
+}
+

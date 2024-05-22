@@ -1,0 +1,18 @@
+﻿/*
+ * HmSplitTextFileByLine v1.0.3.0
+ *
+ * Copyright (c) 2024 Akitsugu Komiyama
+ * under the MIT License
+ */
+
+hidemaruversion "9.25.99";
+
+jsmode "WebView2";
+
+js {
+
+    let nDivFileKiroByteSize = 1; // 1キロバイトごとにファイルを分割する (0.3など少数もOK)
+
+    hidemaru.postExecMacroFile( currentmacrodirectory() + "\\" + "HmSplitTextFileBySize.main.mac", nDivFileKiroByteSize );
+}
+
