@@ -12,23 +12,6 @@
 
 let allText = "あいうえお\r\nかきくけこ\r\nさしすせそ\r\nたちつてと\r\n";
 
-function copyText(allText, linenoStart, columnStart, linenoEnd, columnEnd) {
-    let lines = allText.split(/\r?\n/);
-    let result = "";
-
-    for (let i = linenoStart - 1; i <= linenoEnd - 1; i++) {
-        let line = lines[i];
-        if (i === linenoStart - 1) {
-            result += line.substring(columnStart - 1, columnEnd);
-        } else if (i === linenoEnd - 1) {
-            result += "\r\n" + line.substring(0, columnEnd);
-        } else {
-            result += "\r\n" + line;
-        }
-    }
-
-    return result;
-}
 
 */
 
@@ -39,6 +22,34 @@ hidemaruversion "9.25.99";
 
 jsmode "WebView2";
 js {
+
+function splitText(items) {
+    let chunks = [];
+
+	let bottom_len = linelen_wcs(linecount2()-1);
+
+    var prevCol = 0;
+    var prevLine = 1;
+
+    for (let item of items) {
+        console.log(JSON.stringify(item) + "\r\n");
+        let text = gettext2(prevCol, prevLine, item.col1, item.line1, 1);
+
+        chunks.push(text);
+        prevCol = item.col2;
+        prevLine = item.line2;
+    }
+    let text = gettext2(prevCol, prevLine, bottom_len + 1, linecount2() + 1, 1);
+    chunks.push(text);
+
+    // chunksの最後の要素が""になってしまっていたら、それは連番ファイルとして保存しても無意味なので、カット
+    if (chunks[chunks.length-1] === "") {
+        chunks.pop();
+    }
+
+    return chunks;
+}
+
 
     deletecolormarkerall(findmarker());
     gofiletop();
@@ -68,9 +79,16 @@ let   //平坦に取得
     ]
   };
 */
-    let info2 = getcolormarker(objFormat);
+    let info = getcolormarker(objFormat);
 
-    console.log(JSON.stringify(info2));
+    console.log(JSON.stringify(info));
+    console.log("\r\n----------------------------------------");
+    if (info.items) {
+        let items = info.items;
+		let chunks = splitText(items);
+        console.log(chunks.join("---\r\n"));
+    }
+
 
 
 debuginfo(2);

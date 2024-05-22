@@ -91,23 +91,32 @@ internal class Program
                         break;
                     }
 
-                    // 一番最後の「1文字」はバイトが中途半端で壊れている可能性がきわめて高いので1文字カット（次のループで処理される）
-                    cutStr = cutStr.Substring(0, cutStr.Length - 1);
-
-                    // 末尾が\rならカット(次のループで処理される)
-                    if (cutStr.EndsWith("\r"))
+                    // そもそも最後が\r\nなのであれば、潰れた文字の断片である可能性はさすがに無い。
+                    if (cutStr.EndsWith("\r\n"))
                     {
-                        cutStr = cutStr.Substring(0, cutStr.Length - 1);
+                        ;
                     }
-
-                    // 改行を考慮するモード
-                    if (targetLineMode == 1)
+                    // 最後の文字はいわゆるfallDownを示す文字列のはず。fallDown文字列判定しても良いが、不安がぬぐえないので、最後の１文字は強制的にカット
+                    else
                     {
-                        // 改行あるならば、そこまでを範囲とする。(残りは次のループで処理される）
-                        int lastNewLineIndex = cutStr.LastIndexOf('\n');
-                        if (lastNewLineIndex != -1)
+                        // 一番最後の「1文字」はバイトが中途半端で壊れている可能性がきわめて高いので1文字カット（次のループで処理される）
+                        cutStr = cutStr.Substring(0, cutStr.Length - 1);
+
+                        // 末尾が\rならカット(次のループで処理される)
+                        if (cutStr.EndsWith("\r"))
                         {
-                            cutStr = cutStr.Substring(0, lastNewLineIndex + 1);
+                            cutStr = cutStr.Substring(0, cutStr.Length - 1);
+                        }
+
+                        // 改行を考慮するモード
+                        if (targetLineMode == 1)
+                        {
+                            // 改行あるならば、そこまでを採用範囲とする。(残りの部分は次のループで処理される）
+                            int lastNewLineIndex = cutStr.LastIndexOf('\n');
+                            if (lastNewLineIndex != -1)
+                            {
+                                cutStr = cutStr.Substring(0, lastNewLineIndex + 1); // +1したものMaxはcutStr.Lengthなので問題はない。
+                            }
                         }
                     }
 

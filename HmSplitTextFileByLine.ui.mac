@@ -1,0 +1,135 @@
+﻿/*
+ * HmSplitTextFileByLine v1.0.3.0
+ *
+ * Copyright (c) 2024 Akitsugu Komiyama
+ * under the MIT License
+ */
+
+hidemaruversion "9.25.99";
+
+jsmode "WebView2";
+
+js {
+
+    try {
+        function outputAlert(err) {
+            let dll = loaddll("HmOutputPane.dll");
+            dll.dllFunc.Output(hidemaru.getCurrentWindowHandle(), err + "\r\n");
+        }
+
+        function throwIfNotFileName() {
+            // ファイル名無しは対象にしない
+            if (!hidemaru.getFileFullPath()) {
+                outputAlert("ファイル名が付いているファイルのみ対象とします。");
+                throwCancelException();
+            }
+        }
+
+        throwIfNotFileName();
+
+        const currentmacrodir = currentmacrodirectory();
+
+        // ラベルはこのマクロ独自にしておく
+        const strTargetLabel = "HmSplitTextFileByLine";
+
+        // レンダリングペインを開く
+        function openRenderPane() {
+            // カレントマクロフォルダのhtmlファイルを使う
+            const absoluteUrl = new URL(currentmacrodir + "\\" + "HmSplitTextFileByLine.html").href;
+
+
+            const json_arg = {
+                target: strTargetLabel,
+                uri: absoluteUrl,
+                show: 1,
+                place: "leftside",
+            };
+
+            renderpanecommand(json_arg);
+        }
+
+        // 本当にレンダリングペインが開いて準備がととのったのかのチェック
+        let checkCount_HmSplitTextFileByLine = 0;
+        function checkComplete_HmSplitTextFileByLine() {
+            let readyState = renderpanecommand({ target: strTargetLabel, get: "readyState" });
+            if (readyState == "complete") {
+                hidemaru.clearInterval(idIntervalInitialize_HmSplitTextFileByLine);
+                onRenderPaneShown_HmSplitTextFileByLine();
+            }
+        }
+
+        // レンダリングペインに対して、現在の全体の行数を送信する。
+        let prevUpdateCount = 0;
+        function updateAllLine_HmSplitTextFileByLine() {
+            let readyState = renderpanecommand({ target: strTargetLabel, get: "readyState" });
+            if (readyState == "complete") {
+                // 負荷を軽くするために、「編集ペインのテキスト」に変化があると値が更新される getUpdateCountを利用する。
+                let curUpdateCount = hidemaru.getUpdateCount();
+                if (prevUpdateCount != curUpdateCount) {
+
+                    // 全体のテキストの行数に変更があれば、HTMLに送信する
+                    let text = hidemaru.getTotalText();
+                    let len = text.split("\r\n").length;
+                    renderpanecommand({
+                        target: strTargetLabel,
+                        uri: 'javascript:iAllLine=' + len + ';',
+                    });
+                    prevUpdateCount = curUpdateCount;
+                }
+            }
+        }
+
+        // レンダリングペインが完全に表示されたら、
+        // このJS内にある「onInputHtmlButtonClick_HmSplitTextFileByLine」関数をレンダリングペインから呼び出せるように関数のIDを渡す。
+        // また、「レンダリングペインを操作するのよ～」ということがわかりやすいように、レンダリングペイン側にフォーカスを移す
+        function onRenderPaneShown_HmSplitTextFileByLine() {
+            let idCallback = hidemaru.getFunctionId(onInputHtmlButtonClick_HmSplitTextFileByLine);
+            renderpanecommand({
+                target: strTargetLabel,
+                uri: 'javascript:idCallback=' + idCallback + ';',
+            });
+            renderpanecommand({
+                target: strTargetLabel,
+                focus: 1,
+            });
+        }
+
+        // HTML側で「ボタン」を押すと、これが呼ばれる
+        function onInputHtmlButtonClick_HmSplitTextFileByLine(json_text) {
+            hidemaru.clearInterval(idIntervalUpdate_HmSplitTextFileByLine);
+            renderpanecommand({
+                target: strTargetLabel,
+                show: 0,
+            });
+
+            // json_textの状態で、inputフィールドに入っているテキストが渡ってくるので、その数値を渡す
+            let json_obj = JSON.parse(json_text);
+            let linesPerChunk = json_obj.input_1;
+            hidemaru.postExecMacroFile( currentmacrodir + "\\" + "HmSplitTextFileByLine.main.mac", linesPerChunk );
+        }
+
+        openRenderPane();
+
+        // 次のマクロ実行の際に見るのでletではなくvarにして、ライフサイクルを js { } 外に伸ばす必要がある。
+        // 他のjsを使った秀丸マクロと決して被らない「マクロ空間」にしておく必要がある。(よってtickcount空間という被らない空間に配置している)
+
+        // 最初のレンダリングペインCompleteチェック用のものは、比較的細やかにチェックする。
+        // これは表示しをえたら直ぐにIntervalが止まるのでIntervalが小さくでも大丈夫
+        var idIntervalInitialize_HmSplitTextFileByLine;
+        if (typeof (idIntervalInitialize_HmSplitTextFileByLine) != "undefined") {
+            hidemaru.clearInterval(idIntervalInitialize_HmSplitTextFileByLine);
+        }
+        idIntervalInitialize_HmSplitTextFileByLine = hidemaru.setInterval(checkComplete_HmSplitTextFileByLine, 300);
+
+        // 全体の行数の変化にはおおらかに対応する。
+        var idIntervalUpdate_HmSplitTextFileByLine;
+        if (typeof (idIntervalUpdate_HmSplitTextFileByLine) != "undefined") {
+            hidemaru.clearInterval(idIntervalUpdate_HmSplitTextFileByLine);
+        }
+        idIntervalUpdate_HmSplitTextFileByLine = hidemaru.setInterval(updateAllLine_HmSplitTextFileByLine, 2000);
+
+    } catch(err) {
+        outputAlert(err);
+    }
+} // js
+

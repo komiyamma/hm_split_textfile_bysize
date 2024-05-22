@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HmSplitTextFileByLine</title>
+</head>
+<body>
+何行単位でファイルを分割しますか？:<br>
+&nbsp;<input type="text" id="input_1"><br>
+<br>
+&nbsp;<button id="button_1">分割する</button><br>
+<br>
+&nbsp;(<span id="num_division"></span>)
+
+<script>
+    // ボタンを取得
+    const btn_1 = document.getElementById("button_1");
+    const input_1 = document.getElementById("input_1");
+    const num_division = document.getElementById("num_division");
+
+    let idCallback=0;
+    let iAllLine = 1;
+    let iDivCount = 1;
+
+    // ボタンがクリックされた時の処理
+    btn_1.addEventListener("click", function() {
+        let message_obj = {
+            input_1: input_1.value,
+        };
+        let json = JSON.stringify(message_obj);
+        window.chrome.webview.postMessage({funcid:idCallback, message:json});
+    });
+
+        // iAllLineの値を1秒に一度num_division内に反映する
+    setInterval(() => {
+        if (input_1.value) {
+            try {
+                let inputDivLine = Number(input_1.value);
+                if (inputDivLine > 0) {
+                     iDivCount = Math.ceil(iAllLine / inputDivLine);
+                     num_division.innerText = iDivCount + " 個のファイルに分割予定。";
+                }
+            } catch(err) {}
+        }
+    }, 500);
+
+</script>
+</body>
+</html>

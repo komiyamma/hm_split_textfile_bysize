@@ -1,0 +1,12 @@
+﻿/*
+ * HmSplitTextFileByLine v1.0.3.0
+ *
+ * Copyright (c) 2024 Akitsugu Komiyama
+ * under the MIT License
+ */
+
+hidemaruversion "9.25.99";
+
+#linesPerChunk = 500;
+
+execmacro currentmacrodirectory + @"\HmSplitTextFileByLine.main.mac", str(#linesPerChunk);

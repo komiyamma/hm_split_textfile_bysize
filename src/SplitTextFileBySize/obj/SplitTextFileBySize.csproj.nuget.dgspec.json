@@ -5,7 +5,7 @@
   },
   "projects": {
     "G:\\repogitory\\hm_split_textfile_bysize\\src\\SplitTextFileBySize\\SplitTextFileBySize.csproj": {
-      "version": "1.0.1",
+      "version": "1.0.3",
       "restore": {
         "projectUniqueName": "G:\\repogitory\\hm_split_textfile_bysize\\src\\SplitTextFileBySize\\SplitTextFileBySize.csproj",
         "projectName": "SplitTextFileBySize",
