@@ -28,7 +28,18 @@ try {
     }
 
     function getPerChunk() {
-        let answer = input("何キロバイトにファイルを分割しますか？");
+        // このマクロの引数として行数が指定されている。
+        let answer = getarg(0);
+        let needConfirm = true;
+        if (answer != "") {
+            needConfirm = false;
+        }
+
+        // 何も指定がないなら、ここで簡易インターフェイスで入力
+        if (answer == "") {
+            answer = input("何キロバイトにファイルを分割しますか？");
+        }
+
         if (answer=="") { throwCancelException(); }
 
         try {
@@ -51,7 +62,7 @@ try {
                 throw "バイト数の指定が小さすぎます。";
             }
 
-            return nDivFileByteSize;
+            return [nDivFileByteSize, needConfirm];
 
         } catch (err) {
             throw err;
@@ -97,14 +108,16 @@ try {
 
     function main() {
         // 何バイトに分割するかを得る
-        let nDivFileByteSize = getPerChunk();
+        let [nDivFileByteSize, needConfirm] = getPerChunk();
 
         // 分割数の事前予測
         let nEstimatedDivCount = getEstimatedDivCount(nDivFileByteSize);
 
         // 最後の実行確認
-        if (confirmExecution(nEstimatedDivCount + "個以上のファイルに分割されそうです。\r\n分割しますか？") == false) {
-            throwCancelException();
+        if (needConfirm) {
+            if (confirmExecution(nEstimatedDivCount + "個以上のファイルに分割されそうです。\r\n分割しますか？") == false) {
+                throwCancelException();
+            }
         }
 
         // 分割をしてファイルに保存

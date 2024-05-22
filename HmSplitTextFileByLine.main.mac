@@ -31,7 +31,7 @@ try {
 
         // 何も指定がないなら、ここで簡易インターフェイスで入力
         if (answer == "") {
-            answer = input("何行で分けますか?");
+            answer = input("何行でファイルを分割しますか？");
         }
 
         if (answer=="") { throwCancelException(); }
