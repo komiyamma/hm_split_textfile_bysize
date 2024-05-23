@@ -10,13 +10,13 @@ hidemaruversion "9.25.99";
 // これを「秀丸マクロの層」で入れて表示だけでもしておかないと、JSからキックしたら１秒ほど遅くなってしまう。
 // NeedConfirm(=マクロ引数が無い)である時だけ出す。ここで記述したくはないがあまりにも速度が違うので仕方がない。
 if (filename2 != "" && getarg(0) == "") {
-	renderpanecommand
-	""""""""""""""""""""""""""""""""""""""""
-	{
-	    "target": "HmSplitTextFileBySize",
-	    "show": 1,
-	}
-	"""""""""""""""""""""""""""""""""""""""";
+    renderpanecommand
+    """"""""""""""""""""""""""""""""""""""""
+    {
+        "target": "HmSplitTextFileBySize",
+        "show": 1,
+    }
+    """""""""""""""""""""""""""""""""""""""";
 }
 
 
@@ -56,8 +56,9 @@ js {
         // レンダリングペインを開く
         function openRenderPane() {
             // カレントマクロフォルダのhtmlファイルを使う
-            const absoluteUrl = new URL(currentmacrodir + "\\" + "HmSplitTextFileBySize.ui.html").href;
-
+            let absoluteUrl = new URL(currentmacrodir + "\\" + "HmSplitTextFileBySize.ui.html").href;
+            let idCallback = hidemaru.getFunctionId(onInputHtmlButtonClick_HmSplitTextFileBySize);
+            absoluteUrl += "?strIDCallBack=" + idCallback;
 
             const json_arg = {
                 target: strTargetLabel,
@@ -131,11 +132,6 @@ js {
         // このJS内にある「onInputHtmlButtonClick_HmSplitTextFileBySize」関数をレンダリングペインから呼び出せるように関数のIDを渡す。
         // また、「レンダリングペインを操作するのよ～」ということがわかりやすいように、レンダリングペイン側にフォーカスを移す
         function onRenderPaneShown_HmSplitTextFileBySize() {
-            let idCallback = hidemaru.getFunctionId(onInputHtmlButtonClick_HmSplitTextFileBySize);
-            renderpanecommand({
-                target: strTargetLabel,
-                uri: 'javascript:idCallback=' + idCallback + ';',
-            });
             renderpanecommand({
                 target: strTargetLabel,
                 focus: 1,
