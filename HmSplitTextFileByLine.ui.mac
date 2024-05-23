@@ -23,7 +23,6 @@ if (filename2 != "" && getarg(0) == "") {
 jsmode "WebView2";
 
 js {
-debuginfo(2);
     try {
         function outputAlert(err) {
             let dll = loaddll("HmOutputPane.dll");
@@ -38,6 +37,10 @@ debuginfo(2);
             }
         }
 
+        function throwCancelException() {
+            throw "実行をキャンセルしました。";
+        }
+
         throwIfNotFileName();
 
         const currentmacrodir = currentmacrodirectory();
@@ -48,7 +51,9 @@ debuginfo(2);
         // レンダリングペインを開く
         function openRenderPane() {
             // カレントマクロフォルダのhtmlファイルを使う
-            const absoluteUrl = new URL(currentmacrodir + "\\" + "HmSplitTextFileByLine.ui.html").href;
+            let absoluteUrl = new URL(currentmacrodir + "\\" + "HmSplitTextFileByLine.ui.html").href;
+            let idCallback = hidemaru.getFunctionId(onInputHtmlButtonClick_HmSplitTextFileByLine);
+            absoluteUrl += "?strIDCallBack=" + idCallback;
 
 
             const json_arg = {
@@ -98,7 +103,7 @@ debuginfo(2);
                 }
             }
             let isShowNow = renderpanecommand({ target: strTargetLabel, get: "show" });
-            if (isShowNow == 0) {
+            if (isShowNow == "0") {
                 hidemaru.clearInterval(idIntervalUpdate_HmSplitTextFileByLine);
             }
         }

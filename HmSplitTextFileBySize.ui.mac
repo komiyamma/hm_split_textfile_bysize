@@ -122,7 +122,7 @@ js {
                 });
             }
             let isShowNow = renderpanecommand({ target: strTargetLabel, get: "show" });
-            if (isShowNow == 0) {
+            if (isShowNow == "0") {
                 hidemaru.clearInterval(idIntervalUpdate_HmSplitTextFileBySize);
             }
         }

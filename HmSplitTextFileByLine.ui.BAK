@@ -9,6 +9,7 @@
 &nbsp;<input type="text" id="input_1"><br>
 <br>
 &nbsp;<button id="button_1">分割する</button><br>
+</form>
 <br>
 &nbsp;&nbsp;<span id="info_1"></span>
 
@@ -17,6 +18,11 @@
     const btn_1 = document.getElementById("button_1");
     const input_1 = document.getElementById("input_1");
     const info_1 = document.getElementById("info_1");
+
+	// 現在のURLを取得
+	var url = new URL(window.location.href);
+	// パラメータを取得
+	var params = new URLSearchParams(url.search);
 
     let idCallback=0;
     let nAllLineCount = 1;

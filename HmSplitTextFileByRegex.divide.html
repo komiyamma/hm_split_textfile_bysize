@@ -24,15 +24,13 @@
     const btn_3 = document.getElementById("button_3");
     const info_1 = document.getElementById("info_1");
 
-	// 現在のURLを取得
-	var url = new URL(window.location.href);
-
-	// パラメータを取得
-	var params = new URLSearchParams(url.search);
-
     let idCallback=0;
     let strDivFileCount = "";
 
+	// 現在のURLを取得
+	var url = new URL(window.location.href);
+	// パラメータを取得
+	var params = new URLSearchParams(url.search);
 	strDivFileCount = params.get('strDivFileCount');
     let strIDCallBack = params.get('strIDCallBack');
     idCallback = Number(strIDCallBack);
@@ -48,6 +46,7 @@
 	        let json_text = JSON.stringify(message_obj);
 	        if (idCallback > 0) {
 	            window.chrome.webview.postMessage({funcid:idCallback, message:json_text});
+                window.alert("OK");
 	        } else {
 	            console.log("NO");
 	        }
@@ -63,6 +62,7 @@
 	        };
 	        let json_text = JSON.stringify(message_obj);
 	        if (idCallback > 0) {
+                window.alert("OK");
 	            window.chrome.webview.postMessage({funcid:idCallback, message:json_text});
 	        } else {
 	            console.log("NO");
@@ -79,6 +79,7 @@
 	        };
 	        let json_text = JSON.stringify(message_obj);
 	        if (idCallback > 0) {
+                window.alert("OK");
 	            window.chrome.webview.postMessage({funcid:idCallback, message:json_text});
 	        } else {
 	            console.log("NO");

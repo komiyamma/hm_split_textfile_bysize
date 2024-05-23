@@ -19,7 +19,15 @@
     const input_1 = document.getElementById("input_1");
     const info_1 = document.getElementById("info_1");
 
+	// 現在のURLを取得
+	var url = new URL(window.location.href);
+	// パラメータを取得
+	var params = new URLSearchParams(url.search);
+
     let idCallback=0;
+    let strIDCallBack = params.get('strIDCallBack');
+    idCallback = Number(strIDCallBack);
+
     let nAllLineCount = 1;
     let nDivFileCount = 1;
 

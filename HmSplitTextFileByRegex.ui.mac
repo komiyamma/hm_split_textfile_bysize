@@ -90,6 +90,22 @@ let nDivideType_HmSplitTextFileByRegex = 0;
 
 // ラベルはこのマクロ独自にしておく
 let strTargetLabel_HmSplitTextFileByRegex = "HmSplitTextFileByRegex";
+
+
+// HTML側で「ボタン」を押すと、これが呼ばれる
+function onInputHtmlButtonClick_HmSplitTextFileByRegex(json_text) {
+    hidemaru.clearInterval(idIntervalDivideInit_HmSplitTextFileByRegex);
+    renderpanecommand({
+        target: strTargetLabel_HmSplitTextFileByRegex,
+        show: 0,
+    });
+
+    // json_textの状態で、inputフィールドに入っているテキストが渡ってくるので、その数値を渡す
+    let json_obj = JSON.parse(json_text);
+    let divtype = json_obj.divtype;
+    hidemaru.postExecMacroMemory( "js { postProcedure_HmSplitTextFileByRegex(" + divtype + ") }" );
+}
+
 function showDivide_HmSplitTextFileByRegex(nDivFileCount) {
     const currentmacrodir_HmSplitTextFileByRegex = currentmacrodirectory();
 
@@ -136,19 +152,6 @@ function showDivide_HmSplitTextFileByRegex(nDivFileCount) {
             });
         }
 
-        // HTML側で「ボタン」を押すと、これが呼ばれる
-        function onInputHtmlButtonClick_HmSplitTextFileByRegex(json_text) {
-            hidemaru.clearInterval(idIntervalDivideInit_HmSplitTextFileByRegex);
-            renderpanecommand({
-                target: strTargetLabel_HmSplitTextFileByRegex,
-                show: 0,
-            });
-
-            // json_textの状態で、inputフィールドに入っているテキストが渡ってくるので、その数値を渡す
-            let json_obj = JSON.parse(json_text);
-            let divtype = json_obj.divtype;
-            hidemaru.postExecMacroMemory( "js { postProcedure_HmSplitTextFileByRegex(" + divtype + ") }" );
-        }
 
         openRenderPane();
 
