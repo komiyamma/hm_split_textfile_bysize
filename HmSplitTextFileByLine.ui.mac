@@ -23,6 +23,7 @@ if (filename2 != "" && getarg(0) == "") {
 jsmode "WebView2";
 
 js {
+debuginfo(2);
     try {
         function outputAlert(err) {
             let dll = loaddll("HmOutputPane.dll");
@@ -81,13 +82,24 @@ js {
 
                     // 全体のテキストの行数に変更があれば、HTMLに送信する
                     let text = hidemaru.getTotalText();
-                    let len = text.split("\r\n").length;
+                    let chunks = text.split("\r\n");
+			        // chunksの最後の要素が""になってしまっていたら、それは連番ファイルとして保存しても無意味なので、カット
+			        if (chunks.length >= 2) {
+			            if (chunks[chunks.length-1] === "") {
+			                chunks.pop();
+			            }
+			        }
+                    let len = chunks.length;
                     renderpanecommand({
                         target: strTargetLabel,
                         uri: 'javascript:nAllLineCount=' + len + ';',
                     });
                     prevUpdateCount = curUpdateCount;
                 }
+            }
+            let isShowNow = renderpanecommand({ target: strTargetLabel, get: "show" });
+            if (isShowNow == 0) {
+                hidemaru.clearInterval(idIntervalUpdate_HmSplitTextFileByLine);
             }
         }
 

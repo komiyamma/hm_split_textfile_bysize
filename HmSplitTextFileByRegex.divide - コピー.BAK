@@ -75,7 +75,7 @@
         try {
 	        console.log("OK");
 	        let message_obj = {
-	            divtype: 3
+	            divtype: 1
 	        };
 	        let json_text = JSON.stringify(message_obj);
 	        if (idCallback > 0) {

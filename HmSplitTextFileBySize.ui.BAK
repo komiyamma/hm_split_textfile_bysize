@@ -10,7 +10,6 @@
 <br>
 &nbsp;<button id="button_1">分割する</button><br>
 </form>
-
 <br>
 &nbsp;&nbsp;<span id="info_1"></span>
 

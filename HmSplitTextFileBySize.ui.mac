@@ -121,6 +121,10 @@ js {
                     uri: 'javascript:nAllByteSize=' + nFileByteSize + ';',
                 });
             }
+            let isShowNow = renderpanecommand({ target: strTargetLabel, get: "show" });
+            if (isShowNow == 0) {
+                hidemaru.clearInterval(idIntervalUpdate_HmSplitTextFileBySize);
+            }
         }
 
         // レンダリングペインが完全に表示されたら、

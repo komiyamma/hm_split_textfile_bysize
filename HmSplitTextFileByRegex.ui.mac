@@ -102,6 +102,9 @@ function showDivide_HmSplitTextFileByRegex(nDivFileCount) {
             let absoluteUrl = new URL(currentmacrodir_HmSplitTextFileByRegex + "\\" + "HmSplitTextFileByRegex.divide.html").href;
             absoluteUrl += "?strDivFileCount=" + nDivFileCount;
 
+            let idCallback = hidemaru.getFunctionId(onInputHtmlButtonClick_HmSplitTextFileByRegex);
+            absoluteUrl += "&&strIDCallBack=" + idCallback;
+
             const json_arg = {
                 target: strTargetLabel_HmSplitTextFileByRegex,
                 uri: absoluteUrl,
@@ -127,23 +130,10 @@ function showDivide_HmSplitTextFileByRegex(nDivFileCount) {
         // このJS内にある「onInputHtmlButtonClick_HmSplitTextFileByRegex」関数をレンダリングペインから呼び出せるように関数のIDを渡す。
         // また、「レンダリングペインを操作するのよ～」ということがわかりやすいように、レンダリングペイン側にフォーカスを移す
         function onRenderPaneShown_HmSplitTextFileByRegex() {
-            let idCallback = hidemaru.getFunctionId(onInputHtmlButtonClick_HmSplitTextFileByRegex);
-            renderpanecommand({
-                target: strTargetLabel_HmSplitTextFileByRegex,
-                uri: 'javascript:idCallback=' + idCallback + ';',
-            });
-/*
-            renderpanecommand({
-                target: strTargetLabel_HmSplitTextFileByRegex,
-                uri: 'javascript:nDivFileCount=' + nDivFileCount + ';',
-            });
-*/
             renderpanecommand({
                 target: strTargetLabel_HmSplitTextFileByRegex,
                 focus: 1,
             });
-
-
         }
 
         // HTML側で「ボタン」を押すと、これが呼ばれる
