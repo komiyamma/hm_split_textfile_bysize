@@ -22,11 +22,17 @@
     const btn_3 = document.getElementById("button_3");
     const info_1 = document.getElementById("info_1");
 
-    let idCallback=0;
-    let nDivFileCount = 0;
+	// 現在のURLを取得
+	var url = new URL(window.location.href);
 
-    try {
-    window.onload = () => { input_1.focus(); }
+	// パラメータを取得
+	var params = new URLSearchParams(url.search);
+
+    let idCallback=0;
+    let strDivFileCount = 0;
+
+	strDivFileCount = params.get('strDivFileCount');
+
 
     // ボタンがクリックされた時の処理。行数をjsonテキストにして、秀丸マクロのjsmode内関数を呼び出す(引数にjson_text)を渡す
     btn_1.addEventListener("click", function() {
@@ -34,32 +40,37 @@
             divtype: 1,
         };
         let json_text = JSON.stringify(message_obj);
-        try { window.chrome.webview.postMessage({funcid:idCallback, message:json_text}); } catch(err) {}
+        if (idCallback > 0) {
+            window.chrome.webview.postMessage({funcid:idCallback, message:json_text});
+        }
     });
     btn_2.addEventListener("click", function() {
         let message_obj = {
             divtype: 2,
         };
         let json_text = JSON.stringify(message_obj);
-        try { window.chrome.webview.postMessage({funcid:idCallback, message:json_text}); } catch(err) {}
+        if (idCallback > 0) {
+            window.chrome.webview.postMessage({funcid:idCallback, message:json_text});
+        }
     });
     btn_3.addEventListener("click", function() {
         let message_obj = {
             divtype: 3,
         };
         let json_text = JSON.stringify(message_obj);
-        try { window.chrome.webview.postMessage({funcid:idCallback, message:json_text}); } catch(err) {}
+        if (idCallback > 0) {
+            window.chrome.webview.postMessage({funcid:idCallback, message:json_text});
+        }
     });
 
     // 分割ファイル数の予測値を0.5秒に一度info_1内に反映する
     setInterval(() => {
-        if (nDivFileCount > 0) {
+        if (strDivFileCount) {
             try {
-                info_1.innerText = (nDivFileCount+1) + " 個 ほどに分割予定";
+                info_1.innerText = Number(strDivFileCount)+Number(1) + " 個 ほどに分割予定";
             } catch(err) {}
         }
     }, 300);
-    } catch(err) {}
 </script>
 </body>
 </html>

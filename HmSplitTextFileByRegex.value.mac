@@ -14,6 +14,6 @@ js {
     let strSearchRegexp = "改ページ"; // ファイル分離に使う用語を指定
     let nDivisionType = 1;             // 分離タイプは1-3
 
-    hidemaru.postExecMacroFile( currentmacrodirectory() + "\\" + "HmSplitTextFileByRegex.main.mac", strSearchRegexp, nDivisionType );
+    hidemaru.postExecMacroFile( currentmacrodirectory() + "\\" + "HmSplitTextFileByRegex.ui.mac", strSearchRegexp, nDivisionType );
 }
 

@@ -12,7 +12,8 @@ hidemaruversion "9.25.99";
 setcompatiblemode 0x00020000; // ユーザーが利用する普段の検索条件を保存しておき、このマクロ終了後に元へと戻す。
 
 // これを「秀丸マクロの層」で入れて表示だけでもしておかないと、JSからキックしたら１秒ほど遅くなってしまう。
-if (filename2 != "") {
+// NeedConfirm(=マクロ引数が無い)である時だけ出す。ここで記述したくはないがあまりにも速度が違うので仕方がない。
+if (filename2 != "" && getarg(0) == "") {
 	renderpanecommand
 	""""""""""""""""""""""""""""""""""""""""
 	{
@@ -42,7 +43,6 @@ function showHelp_HmSplitTextFileByRegex() {
 	    function openRenderPane() {
 	        // カレントマクロフォルダのhtmlファイルを使う
 	        const absoluteUrl = new URL(currentmacrodir_HmSplitTextFileByRegex + "\\" + "HmSplitTextFileByRegex.help.html").href;
-
 
 	        const json_arg = {
 	            target: strTargetLabel_HmSplitTextFileByRegex,
@@ -99,9 +99,9 @@ function showDivide_HmSplitTextFileByRegex(nDivFileCount) {
 	    // レンダリングペインを開く
 	    function openRenderPane() {
 	        // カレントマクロフォルダのhtmlファイルを使う
-	        const absoluteUrl = new URL(currentmacrodir_HmSplitTextFileByRegex + "\\" + "HmSplitTextFileByRegex.divide.html").href;
+	        let absoluteUrl = new URL(currentmacrodir_HmSplitTextFileByRegex + "\\" + "HmSplitTextFileByRegex.divide.html").href;
+            absoluteUrl += "?strDivFileCount=" + nDivFileCount;
 
-            console.log(absoluteUrl);
 	        const json_arg = {
 	            target: strTargetLabel_HmSplitTextFileByRegex,
 	            uri: absoluteUrl,
@@ -130,12 +130,14 @@ function showDivide_HmSplitTextFileByRegex(nDivFileCount) {
             let idCallback = hidemaru.getFunctionId(onInputHtmlButtonClick_HmSplitTextFileByRegex);
             renderpanecommand({
                 target: strTargetLabel_HmSplitTextFileByRegex,
-                uri: 'javascript:nDivFileCount=' + nDivFileCount + ';',
-            });
-            renderpanecommand({
-                target: strTargetLabel_HmSplitTextFileByRegex,
                 uri: 'javascript:idCallback=' + idCallback + ';',
             });
+/*
+            renderpanecommand({
+                target: strTargetLabel_HmSplitTextFileByRegex,
+                uri: 'javascript:nDivFileCount=' + nDivFileCount + ';',
+            });
+*/
             renderpanecommand({
                 target: strTargetLabel_HmSplitTextFileByRegex,
                 focus: 1,
@@ -416,9 +418,6 @@ try {
         // 何行に分割するかを得る
         gColorMarkerItems = getPerChunk();
 
-
-       debuginfo(2);
-        console.log(gColorMarkerItems.length);
         // どの分割タイプかという決定
         showDivide_HmSplitTextFileByRegex(gColorMarkerItems.length);
     }
