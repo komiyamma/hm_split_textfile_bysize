@@ -5,9 +5,11 @@
 </head>
 <body>
 「<b>何キロバイト</b>」単位で、<br>ファイルを分割しますか？:<br>
+<form onsubmit="event.preventDefault(); document.getElementById('button_1').click();">
 &nbsp;<input type="text" id="input_1"><br>
 <br>
 &nbsp;<button id="button_1">分割する</button><br>
+</form>
 <br>
 &nbsp;&nbsp;<span id="info_1"></span>
 

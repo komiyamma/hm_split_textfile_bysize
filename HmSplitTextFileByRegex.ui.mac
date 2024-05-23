@@ -14,13 +14,13 @@ setcompatiblemode 0x00020000; // ユーザーが利用する普段の検索条�
 // これを「秀丸マクロの層」で入れて表示だけでもしておかないと、JSからキックしたら１秒ほど遅くなってしまう。
 // NeedConfirm(=マクロ引数が無い)である時だけ出す。ここで記述したくはないがあまりにも速度が違うので仕方がない。
 if (filename2 != "" && getarg(0) == "") {
-	renderpanecommand
-	""""""""""""""""""""""""""""""""""""""""
-	{
-	    "target": "HmSplitTextFileByRegex",
-	    "show": 1,
-	}
-	"""""""""""""""""""""""""""""""""""""""";
+    renderpanecommand
+    """"""""""""""""""""""""""""""""""""""""
+    {
+        "target": "HmSplitTextFileByRegex",
+        "show": 1,
+    }
+    """""""""""""""""""""""""""""""""""""""";
 }
 
 jsmode "WebView2";
@@ -37,43 +37,43 @@ function showHelp_HmSplitTextFileByRegex() {
 
     const currentmacrodir_HmSplitTextFileByRegex = currentmacrodirectory();
 
-	try {
+    try {
 
-	    // レンダリングペインを開く
-	    function openRenderPane() {
-	        // カレントマクロフォルダのhtmlファイルを使う
-	        const absoluteUrl = new URL(currentmacrodir_HmSplitTextFileByRegex + "\\" + "HmSplitTextFileByRegex.help.html").href;
+        // レンダリングペインを開く
+        function openRenderPane() {
+            // カレントマクロフォルダのhtmlファイルを使う
+            const absoluteUrl = new URL(currentmacrodir_HmSplitTextFileByRegex + "\\" + "HmSplitTextFileByRegex.help.html").href;
 
-	        const json_arg = {
-	            target: strTargetLabel_HmSplitTextFileByRegex,
-	            uri: absoluteUrl,
-	            show: 1,
-	            place: "leftside",
-	        };
+            const json_arg = {
+                target: strTargetLabel_HmSplitTextFileByRegex,
+                uri: absoluteUrl,
+                show: 1,
+                place: "leftside",
+            };
 
-	        renderpanecommand(json_arg);
-	    }
+            renderpanecommand(json_arg);
+        }
 
-	    // 本当にレンダリングペインが開いて準備がととのったのかのチェック
-	    let checkCount_HmSplitTextFileByRegex = 0;
-	    function checkComplete_HmSplitTextFileByRegex() {
-	        let readyState = renderpanecommand({ target: strTargetLabel_HmSplitTextFileByRegex, get: "readyState" });
-	        if (readyState == "complete") {
-	            hidemaru.clearInterval(idIntervalInitialize_HmSplitTextFileByRegex);
-	        }
-	    }
+        // 本当にレンダリングペインが開いて準備がととのったのかのチェック
+        let checkCount_HmSplitTextFileByRegex = 0;
+        function checkComplete_HmSplitTextFileByRegex() {
+            let readyState = renderpanecommand({ target: strTargetLabel_HmSplitTextFileByRegex, get: "readyState" });
+            if (readyState == "complete") {
+                hidemaru.clearInterval(idIntervalInitialize_HmSplitTextFileByRegex);
+            }
+        }
 
-	    openRenderPane();
+        openRenderPane();
 
-	    // 次のマクロ実行の際に見るのでletではなくvarにして、ライフサイクルを js { } 外に伸ばす必要がある。
-	    // 他のjsを使った秀丸マクロと決して被らない「マクロ空間」にしておく必要がある。(よってtickcount空間という被らない空間に配置している)
-	    if (typeof (idIntervalInitialize_HmSplitTextFileByRegex) != "undefined") {
-	        hidemaru.clearInterval(idIntervalInitialize_HmSplitTextFileByRegex);
-	    }
-	    idIntervalInitialize_HmSplitTextFileByRegex = hidemaru.setInterval(checkComplete_HmSplitTextFileByRegex, 300);
-	} catch(err) {
-	    outputAlert(err);
-	}
+        // 次のマクロ実行の際に見るのでletではなくvarにして、ライフサイクルを js { } 外に伸ばす必要がある。
+        // 他のjsを使った秀丸マクロと決して被らない「マクロ空間」にしておく必要がある。(よってtickcount空間という被らない空間に配置している)
+        if (typeof (idIntervalInitialize_HmSplitTextFileByRegex) != "undefined") {
+            hidemaru.clearInterval(idIntervalInitialize_HmSplitTextFileByRegex);
+        }
+        idIntervalInitialize_HmSplitTextFileByRegex = hidemaru.setInterval(checkComplete_HmSplitTextFileByRegex, 300);
+    } catch(err) {
+        outputAlert(err);
+    }
 }
 
 
@@ -94,33 +94,33 @@ function showDivide_HmSplitTextFileByRegex(nDivFileCount) {
     const currentmacrodir_HmSplitTextFileByRegex = currentmacrodirectory();
 
     nDivideType_HmSplitTextFileByRegex = 0;
-	try {
+    try {
 
-	    // レンダリングペインを開く
-	    function openRenderPane() {
-	        // カレントマクロフォルダのhtmlファイルを使う
-	        let absoluteUrl = new URL(currentmacrodir_HmSplitTextFileByRegex + "\\" + "HmSplitTextFileByRegex.divide.html").href;
+        // レンダリングペインを開く
+        function openRenderPane() {
+            // カレントマクロフォルダのhtmlファイルを使う
+            let absoluteUrl = new URL(currentmacrodir_HmSplitTextFileByRegex + "\\" + "HmSplitTextFileByRegex.divide.html").href;
             absoluteUrl += "?strDivFileCount=" + nDivFileCount;
 
-	        const json_arg = {
-	            target: strTargetLabel_HmSplitTextFileByRegex,
-	            uri: absoluteUrl,
-	            show: 1,
-	            place: "leftside",
-	        };
+            const json_arg = {
+                target: strTargetLabel_HmSplitTextFileByRegex,
+                uri: absoluteUrl,
+                show: 1,
+                place: "leftside",
+            };
 
-	        renderpanecommand(json_arg);
-	    }
+            renderpanecommand(json_arg);
+        }
 
-	    // 本当にレンダリングペインが開いて準備がととのったのかのチェック
-	    let checkCount_HmSplitTextFileByRegex = 0;
-	    function checkComplete_HmSplitTextFileByRegex() {
-	        let readyState = renderpanecommand({ target: strTargetLabel_HmSplitTextFileByRegex, get: "readyState" });
-	        if (readyState == "complete") {
-	            hidemaru.clearInterval(idIntervalDivideInit_HmSplitTextFileByRegex);
+        // 本当にレンダリングペインが開いて準備がととのったのかのチェック
+        let checkCount_HmSplitTextFileByRegex = 0;
+        function checkComplete_HmSplitTextFileByRegex() {
+            let readyState = renderpanecommand({ target: strTargetLabel_HmSplitTextFileByRegex, get: "readyState" });
+            if (readyState == "complete") {
+                hidemaru.clearInterval(idIntervalDivideInit_HmSplitTextFileByRegex);
                 onRenderPaneShown_HmSplitTextFileByRegex();
-	        }
-	    }
+            }
+        }
 
 
         // レンダリングペインが完全に表示されたら、
@@ -160,17 +160,17 @@ function showDivide_HmSplitTextFileByRegex(nDivFileCount) {
             hidemaru.postExecMacroMemory( "js { postProcedure_HmSplitTextFileByRegex(" + divtype + ") }" );
         }
 
-	    openRenderPane();
+        openRenderPane();
 
-	    // 次のマクロ実行の際に見るのでletではなくvarにして、ライフサイクルを js { } 外に伸ばす必要がある。
-	    // 他のjsを使った秀丸マクロと決して被らない「マクロ空間」にしておく必要がある。(よってtickcount空間という被らない空間に配置している)
-	    if (typeof (idIntervalDivideInit_HmSplitTextFileByRegex) != "undefined") {
-	        hidemaru.clearInterval(idIntervalDivideInit_HmSplitTextFileByRegex);
-	    }
-	    idIntervalDivideInit_HmSplitTextFileByRegex = hidemaru.setInterval(checkComplete_HmSplitTextFileByRegex, 300);
-	} catch(err) {
-	    outputAlert(err);
-	}
+        // 次のマクロ実行の際に見るのでletではなくvarにして、ライフサイクルを js { } 外に伸ばす必要がある。
+        // 他のjsを使った秀丸マクロと決して被らない「マクロ空間」にしておく必要がある。(よってtickcount空間という被らない空間に配置している)
+        if (typeof (idIntervalDivideInit_HmSplitTextFileByRegex) != "undefined") {
+            hidemaru.clearInterval(idIntervalDivideInit_HmSplitTextFileByRegex);
+        }
+        idIntervalDivideInit_HmSplitTextFileByRegex = hidemaru.setInterval(checkComplete_HmSplitTextFileByRegex, 300);
+    } catch(err) {
+        outputAlert(err);
+    }
 }
 
 } // js
@@ -207,15 +207,15 @@ try {
         // ２番目の引数として分割タイプが外部から指定されているなら、数値に直して
         let answer = getarg(1);
         if (answer != "") {
-	        let nDivideType = Number(answer);
-	        if (Number.isNaN(nDivideType)) {
-	            throwInvalidDivideType();
-	        }
-	        if (1 <= nDivideType && nDivideType <= 3) {
-	            ; // 問題なし
-	        } else {
-	            throwInvalidDivideType();
-	        }
+            let nDivideType = Number(answer);
+            if (Number.isNaN(nDivideType)) {
+                throwInvalidDivideType();
+            }
+            if (1 <= nDivideType && nDivideType <= 3) {
+                ; // 問題なし
+            } else {
+                throwInvalidDivideType();
+            }
         }
 
         answer = "1";
@@ -410,7 +410,7 @@ try {
 
     let gColorMarkerItems = null;
 
-	function prevProcedure_HmSplitTextFileByRegex() {
+    function prevProcedure_HmSplitTextFileByRegex() {
 
         // 検索に入れてねというヘルプ
         showHelp_HmSplitTextFileByRegex();
@@ -449,19 +449,19 @@ try {
         if (needConfirm) {
             prevProcedure_HmSplitTextFileByRegex();
 
-		} else {
+        } else {
 
-	        // 何行に分割するかを得る
-	        let colorMarkerItems = getPerChunk();
+            // 何行に分割するかを得る
+            let colorMarkerItems = getPerChunk();
 
-	        let nDivideType = getDivideType();
- 	        const chunks = splitText(colorMarkerItems, nDivideType);
+            let nDivideType = getDivideType();
+             const chunks = splitText(colorMarkerItems, nDivideType);
 
-	        // 分割したテキストを分割してファイルに保存
-	        saveChunksToFiles(chunks);
-	        // console.log(chunks.join("\r\n---------\r\n"));
+            // 分割したテキストを分割してファイルに保存
+            saveChunksToFiles(chunks);
+            // console.log(chunks.join("\r\n---------\r\n"));
 
-	        outputAlert(chunks.length + "個のファイルに分割しました。");
+            outputAlert(chunks.length + "個のファイルに分割しました。");
        }
 
     }

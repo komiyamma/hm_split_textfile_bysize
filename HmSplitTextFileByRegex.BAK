@@ -1,11 +1,14 @@
 ﻿<html>
 <body>
 
-<input type="text" name="regexp_text" id="regexp_id">
+<form onsubmit="event.preventDefault(); document.getElementById('button_id').click();">
+  <input type="text" name="regexp_text" id="input_1">
+  <button type="submit" id="button_id" style="display: none;"></button>
+</form>
 
 <script>
 // input要素の参照を取得
-const input = document.getElementById('regexp_id');
+const input = document.getElementById('input_1');
 
 let prevValue = input.value; // 直前の入力値を保持する変数
 let idCallback=0;

@@ -5,6 +5,7 @@
 </head>
 <body>
 「<b>何行</b>」単位で、<br>ファイルを分割しますか？:<br>
+<form onsubmit="event.preventDefault(); document.getElementById('button_1').click();">
 &nbsp;<input type="text" id="input_1"><br>
 <br>
 &nbsp;<button id="button_1">分割する</button><br>
@@ -20,6 +21,8 @@
     let idCallback=0;
     let nAllLineCount = 1;
     let nDivFileCount = 1;
+
+    window.onload = () => { input_1.focus(); }
 
     // ボタンがクリックされた時の処理。行数をjsonテキストにして、秀丸マクロのjsmode内関数を呼び出す(引数にjson_text)を渡す
     btn_1.addEventListener("click", function() {
