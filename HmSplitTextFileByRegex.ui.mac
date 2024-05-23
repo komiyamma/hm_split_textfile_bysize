@@ -289,8 +289,16 @@ try {
 
 
         // chunksの最後の要素が""になってしまっていたら、それは連番ファイルとして保存しても無意味なので、カット
-        if (chunks[chunks.length - 1] === "") {
-            chunks.pop();
+        if (chunks.length >= 2) {
+            if (chunks[chunks.length-1] === "") {
+                chunks.pop();
+            }
+        }
+        // chunksの先頭要素が""なら、それは連番ファイルとして保存しても無意味なので、カット
+        if (chunks.length >= 2) {
+            if (chunks[0] === "") {
+                chunks.shift();
+            }
         }
 
         return chunks;
