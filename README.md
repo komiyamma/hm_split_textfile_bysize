@@ -18,4 +18,4 @@ HmSplitTextFileBySize.ui.mac を 実行する。
 
 ### HmSplitTextFileBySize.value.mac
 
-- UIなしで直接値で指示する時はこれを編集して自分なりに利用してください。
+UIなしで直接値で指示する時はこれを編集して自分なりに利用してください。
