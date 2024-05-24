@@ -6,7 +6,7 @@
 
 ## インストール
   
-「HmSplitTextFileBySize.***」と「SplitTextFileBySize」を一緒のフォルダーに入れる
+「HmSplitTextFileBySize.***」と「SplitTextFileBySize.exe」を一緒のフォルダーに入れる
 
 ## 使い方
 
