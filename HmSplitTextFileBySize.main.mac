@@ -1,5 +1,5 @@
 ﻿/*
- * HmSplitTextFileBySize v1.0.5.2
+ * HmSplitTextFileBySize v1.0.5.3
  *
  * Copyright (c) 2024 Akitsugu Komiyama
  * under the MIT License
@@ -10,38 +10,49 @@ hidemaruversion "9.25.99";
 jsmode "WebView2";
 js {
 
-try {
-    let bLineConsider = 1; // ファイルを分割する際に、最寄りの改行を考慮する
+class HmSplitTextFileBySizeMain {
 
-    // ファイル名無しは対象にしない
-    if (!hidemaru.getFileFullPath()) {
-        throw "ファイル名が付いているファイルのみ対象とします。";
+    bLineConsider = 1; // ファイルを分割する際に、最寄りの改行を考慮する
+
+    constructor() {
+        // ファイル名無しは対象にしない
+        if (!hidemaru.getFileFullPath()) {
+            throw "ファイル名が付いているファイルのみ対象とします。";
+        }
+        // 何バイトに分割するかを得る
+        let [nDivFileByteSize, needConfirm] = this.getPerChunk();
+        // 最後の実行確認
+        if (needConfirm) {
+            // 分割数の事前予測
+            let nEstimatedDivCount = this.getEstimatedDivCount(nDivFileByteSize);
+            if (this.confirmExecution(nEstimatedDivCount + "個以上のファイルに分割されそうです。\r\n分割しますか？") == false) {
+                HmSplitTextFileBySizeMain.throwCancelException();
+            }
+        }
+        // 分割をしてファイルに保存
+        this.executeSplitFile(nDivFileByteSize);
     }
-
-    function outputAlert(err) {
+    static outputAlert(err) {
         let dll = loaddll("HmOutputPane.dll");
         dll.dllFunc.Output(hidemaru.getCurrentWindowHandle(), err + "\r\n");
     }
-
-    function throwCancelException() {
+    static throwCancelException() {
         throw "実行をキャンセルしました。";
     }
-
-    function getPerChunk() {
+    getPerChunk() {
         // このマクロの引数として行数が指定されている。
         let answer = getarg(0);
         let needConfirm = true;
         if (answer != "") {
             needConfirm = false;
         }
-
         // 何も指定がないなら、ここで簡易インターフェイスで入力
         if (answer == "") {
             answer = input("何キロバイトにファイルを分割しますか？");
         }
-
-        if (answer=="") { throwCancelException(); }
-
+        if (answer == "") {
+            HmSplitTextFileBySizeMain.throwCancelException();
+        }
         try {
             // 整数解釈でトライ
             let nDivFileKiroByteSize = Number(answer);
@@ -49,37 +60,31 @@ try {
                 // 浮動小数解釈でトライ
                 nDivFileKiroByteSize = parseFloat(answer);
                 if (Number.isNaN(nDivFileKiroByteSize)) {
-                    throwCancelException();
+                    HmSplitTextFileBySizeMain.throwCancelException();
                 }
             }
-
-            let nDivFileByteSize = nDivFileKiroByteSize * 1024 - 3*bom(); // BOMがあれば3バイト減らしておく。
+            let nDivFileByteSize = nDivFileKiroByteSize * 1024 - 3 * bom(); // BOMがあれば3バイト減らしておく。
             nDivFileByteSize = Math.floor(nDivFileByteSize);
-
             // 20バイトより小さな単位でファイルを分けるのは無謀
             if (nDivFileByteSize <= 20) {
                 throw "バイト数の指定が小さすぎます。";
             }
-
             return [nDivFileByteSize, needConfirm];
-
-        } catch (err) {
+        }
+        catch (err) {
             throw err;
         }
     }
-
     // 分割数の事前予測
-    function getEstimatedDivCount(nDivFileByteSize) {
+    getEstimatedDivCount(nDivFileByteSize) {
         // 最低個数の割り出し。この個数以上になるのは確実
         let nFileByteSize = existfile(hidemaru.getFileFullPath(), 2);
         let nEstimatedNum = Math.floor(nFileByteSize / nDivFileByteSize) + 1;
         return nEstimatedNum;
     }
-
-    function confirmExecution(text) {
+    confirmExecution(text) {
         let buttonOkCancel = 0x0001;
         let dialogResult = message(text, "実行確認", buttonOkCancel);
-
         // キャンセル・中止・いいえ などなら false
         // (少々 messageダイアログのボタンタイプを変更してもいいようにここで柔らかく対応しておく)
         if (dialogResult == 2 || dialogResult == 3 || dialogResult == 7) {
@@ -87,9 +92,8 @@ try {
         }
         return true;
     }
-
-    function executeSplitFile(nDivFileByteSize) {
-        let commandLine = `"${currentmacrodirectory()}\\SplitTextFileBySize.exe" "${filename2()}" ${nDivFileByteSize} ${codepage()} ${bom()} ${bLineConsider}`;
+    executeSplitFile(nDivFileByteSize) {
+        let commandLine = `"${currentmacrodirectory()}\\SplitTextFileBySize.exe" "${filename2()}" ${nDivFileByteSize} ${codepage()} ${bom()} ${this.bLineConsider}`;
         runex (commandLine
             , 0     //sync   0:async, 1:sync
             , 0, "" //stdin  0:none, 1:auto, 2:<file, 3:(reserved),
@@ -104,30 +108,15 @@ try {
             , 0     //extended flags
         );
     }
-
-    function main() {
-        // 何バイトに分割するかを得る
-        let [nDivFileByteSize, needConfirm] = getPerChunk();
-
-        // 最後の実行確認
-        if (needConfirm) {
-            // 分割数の事前予測
-            let nEstimatedDivCount = getEstimatedDivCount(nDivFileByteSize);
-
-            if (confirmExecution(nEstimatedDivCount + "個以上のファイルに分割されそうです。\r\n分割しますか？") == false) {
-                throwCancelException();
-            }
-        }
-
-        // 分割をしてファイルに保存
-        executeSplitFile(nDivFileByteSize);
-    }
-
-    main();
-
-} catch (err) {
-    outputAlert(err);
 }
+
+try {
+    let objHmSplitTextFileBySizeMain = new HmSplitTextFileBySizeMain();
+}
+catch (err) {
+    HmSplitTextFileBySizeMain.outputAlert(err);
+}
+
 
 
 } // js
