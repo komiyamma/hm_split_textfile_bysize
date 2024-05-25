@@ -19,9 +19,9 @@
     const info_1 = document.getElementById("info_1");
 
 	// 現在のURLを取得
-	var url = new URL(window.location.href);
+	let url = new URL(window.location.href);
 	// パラメータを取得
-	var params = new URLSearchParams(url.search);
+	let params = new URLSearchParams(url.search);
 
     let idCallback=0;
     let strIDCallBack = params.get('strIDCallBack');
