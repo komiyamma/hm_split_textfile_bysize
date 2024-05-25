@@ -49,9 +49,31 @@ internal class Program
             // ファイルを読み込む
             string allText = System.IO.File.ReadAllText(filePath, encode);
 
-            // 文字列をバイト配列に変換
+            // 実処理において、高速化のために、1文字分かならず減らして計算するため、
+            // ここで逆に最低1文字分増やしておく。(実際にはこれでは足りないことが多いだろうがまぁカウンター)
 
+            // utf16なら(要するにutf16の１文字分増やす)
+            if (targetEncodingCodePage == 1200)
+            {
+                // 奇数なら偶数に
+                if (targetCurLength % 2 == 1)
+                {
+                    targetCurLength += 1;
+                }
+                else
+                {
+                    // 偶数なら偶数のまま2増やす
+                    targetCurLength += 2;
+                }
+            }
+            else
+            {
+                targetCurLength += 1;
+            }
+            
+            // 格ファイルに対応することになる文字列のリスト。
             List<string> fileTextList = new List<string>();
+
             while (true)
             {
                 // まず、minLengthまわりの処理は不要なのであるが、「allText」をすべてバイト配列にすると、長大だと非常に不可が大きくなるため、

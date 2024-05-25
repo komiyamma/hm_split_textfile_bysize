@@ -14,11 +14,11 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SplitTextFileBySize")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyCopyrightAttribute("2024 © Akitsugu Komiyama")]
-[assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.3")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.3+2535af811211828d3b57fe69bea1088728df5bbe")]
+[assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.5+882a64827618289ffd7ce5a89031800cbf725eaa")]
 [assembly: System.Reflection.AssemblyProductAttribute("SplitTextFileBySize")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SplitTextFileBySize")]
-[assembly: System.Reflection.AssemblyVersionAttribute("1.0.3")]
+[assembly: System.Reflection.AssemblyVersionAttribute("1.0.5")]
 
 // MSBuild WriteCodeFragment クラスによって生成されました。
 
