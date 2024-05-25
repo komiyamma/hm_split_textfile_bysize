@@ -1,5 +1,5 @@
 ﻿/*
- * HmSplitTextFileBySize v1.0.5.2
+ * HmSplitTextFileBySize v1.0.5.3
  *
  * Copyright (c) 2024 Akitsugu Komiyama
  * under the MIT License
@@ -24,156 +24,124 @@ if (filename2 != "" && getarg(0) == "") {
 jsmode "WebView2";
 
 js {
-
-    try {
-        function outputAlert(err) {
-            let dll = loaddll("HmOutputPane.dll");
-            dll.dllFunc.Output(hidemaru.getCurrentWindowHandle(), err + "\r\n");
-        }
-
-        function throwIfNotFileName() {
-            // ファイル名無しは対象にしない
-            if (!hidemaru.getFileFullPath()) {
-                outputAlert("ファイル名が付いているファイルのみ対象とします。");
-                throwCancelException();
-            }
-        }
-
-        function throwCancelException() {
-            throw "実行をキャンセルしました。";
-        }
-
-        throwIfNotFileName();
-
-        const currentmacrodir = currentmacrodirectory();
-
-        // 開始時点でファイルサイズは控えておく
-        const nFileSizeAtStart = existfile(hidemaru.getFileFullPath(), 2);
-
-        // ラベルはこのマクロ独自にしておく
-        const strTargetLabel = "HmSplitTextFileBySize";
-
-        // レンダリングペインを開く
-        function openRenderPane() {
-            // カレントマクロフォルダのhtmlファイルを使う
-            let absoluteUrl = new URL(currentmacrodir + "\\" + "HmSplitTextFileBySize.ui.html").href;
-            let idCallback = hidemaru.getFunctionId(onInputHtmlButtonClick_HmSplitTextFileBySize);
-            absoluteUrl += "?strIDCallBack=" + idCallback;
-
-            const json_arg = {
-                target: strTargetLabel,
-                uri: absoluteUrl,
-                show: 1,
-                place: "leftside",
-            };
-
-            renderpanecommand(json_arg);
-        }
-
-        // 本当にレンダリングペインが開いて準備がととのったのかのチェック
-        let checkCount_HmSplitTextFileBySize = 0;
-        function checkComplete_HmSplitTextFileBySize() {
-            let readyState = renderpanecommand({ target: strTargetLabel, get: "readyState" });
-            if (readyState == "complete") {
-                hidemaru.clearInterval(idIntervalInitialize_HmSplitTextFileBySize);
-                onRenderPaneShown_HmSplitTextFileBySize();
-            }
-        }
-
-        // 分割数の事前予測
-        function getEstimatedDivCount(nDivFileByteSize) {
-            // 最低個数の割り出し。この個数以上になるのは確実
-            let nEstimatedNum = Math.floor(nFileByteSize / nDivFileByteSize) + 1;
-            return nEstimatedNum;
-        }
-
-        function getCurrentFileSize() {
-            try {
-                let fso = new createobject("Scripting.FileSystemObject");
-
-                // ファイルのパス
-                let filePath = hidemaru.getFileFullPath();
-
-                // ファイルが存在するかチェック
-                if (fso.FileExists(filePath)) {
-                    // ファイルオブジェクトを取得
-                    let file = fso.GetFile(filePath);
-                    
-                    // ファイルサイズを取得
-                    return file.Size;
-                }
-            } catch(err) {
-                outputAlert("ファイルサイズの取得に失敗しました。");
-            }
-
-            // 最悪の場合は開始時点のファイルサイズを返す
-            return nFileSizeAtStart;
-        }
-
-        // レンダリングペインに対して、現在のファイルのバイト数を送信する。
-        function updateTextInfo_HmSplitTextFileBySize() {
-            let readyState = renderpanecommand({ target: strTargetLabel, get: "readyState" });
-            if (readyState == "complete") {
-                 let nFileByteSize = getCurrentFileSize();
-
-                // ファイルのバイトサイズを、HTMLに送信する
-                renderpanecommand({
-                    target: strTargetLabel,
-                    uri: 'javascript:nAllByteSize=' + nFileByteSize + ';',
-                });
-            }
-            let isShowNow = renderpanecommand({ target: strTargetLabel, get: "show" });
-            if (isShowNow == "0") {
-                hidemaru.clearInterval(idIntervalUpdate_HmSplitTextFileBySize);
-            }
-        }
-
-        // レンダリングペインが完全に表示されたら、
-        // このJS内にある「onInputHtmlButtonClick_HmSplitTextFileBySize」関数をレンダリングペインから呼び出せるように関数のIDを渡す。
-        // また、「レンダリングペインを操作するのよ～」ということがわかりやすいように、レンダリングペイン側にフォーカスを移す
-        function onRenderPaneShown_HmSplitTextFileBySize() {
-            renderpanecommand({
-                target: strTargetLabel,
-                focus: 1,
-            });
-        }
-
-        // HTML側で「ボタン」を押すと、これが呼ばれる
-        function onInputHtmlButtonClick_HmSplitTextFileBySize(json_text) {
-            hidemaru.clearInterval(idIntervalUpdate_HmSplitTextFileBySize);
-            renderpanecommand({
-                target: strTargetLabel,
-                show: 0,
-            });
-
-            // json_textの状態で、inputフィールドに入っているテキストが渡ってくるので、その数値を渡す
-            let json_obj = JSON.parse(json_text);
-            let nDivFileKiroByteSize = json_obj.input_1;
-            hidemaru.postExecMacroFile( currentmacrodir + "\\" + "HmSplitTextFileBySize.main.mac", nDivFileKiroByteSize );
-        }
-
-        openRenderPane();
-
-        // 次のマクロ実行の際に見るのでletではなくvarにして、ライフサイクルを js { } 外に伸ばす必要がある。
-        // 他のjsを使った秀丸マクロと決して被らない「マクロ空間」にしておく必要がある。(よってtickcount空間という被らない空間に配置している)
-
-        // 最初のレンダリングペインCompleteチェック用のものは、比較的細やかにチェックする。
-        // これは表示しをえたら直ぐにIntervalが止まるのでIntervalが小さくでも大丈夫
-        var idIntervalInitialize_HmSplitTextFileBySize;
-        if (typeof (idIntervalInitialize_HmSplitTextFileBySize) != "undefined") {
-            hidemaru.clearInterval(idIntervalInitialize_HmSplitTextFileBySize);
-        }
-        idIntervalInitialize_HmSplitTextFileBySize = hidemaru.setInterval(checkComplete_HmSplitTextFileBySize, 300);
-
-        // 全体の行数の変化にはおおらかに対応する。
-        var idIntervalUpdate_HmSplitTextFileBySize;
-        if (typeof (idIntervalUpdate_HmSplitTextFileBySize) != "undefined") {
-            hidemaru.clearInterval(idIntervalUpdate_HmSplitTextFileBySize);
-        }
-        idIntervalUpdate_HmSplitTextFileBySize = hidemaru.setInterval(updateTextInfo_HmSplitTextFileBySize, 2000);
-
-    } catch(err) {
-        outputAlert(err);
+if (typeof (objHmSplitTextFileBySizeUI) != "undefined") {
+    objHmSplitTextFileBySizeUI._destructor();
+}
+class HmSplitTextFileBySizeUI {
+    static currentmacrodir = currentmacrodirectory();
+    // 開始時点でファイルサイズは控えておく
+    static nFileSizeAtStart = existfile(hidemaru.getFileFullPath(), 2);
+    // ラベルはこのマクロ独自にしておく
+    static strTargetLabel = "HmSplitTextFileBySize";
+    constructor() {
+        HmSplitTextFileBySizeUI.throwIfNotFileName();
+        HmSplitTextFileBySizeUI.openRenderPane();
+        HmSplitTextFileBySizeUI.setItitializeInterval();
+        HmSplitTextFileBySizeUI.setUpdateInterval();
     }
+    _destructor() {
+        HmSplitTextFileBySizeUI.clearInitializeInterval();
+        HmSplitTextFileBySizeUI.clearUpdateInterval();
+    }
+    static outputAlert(err) {
+        let dll = loaddll("HmOutputPane.dll");
+        dll.dllFunc.Output(hidemaru.getCurrentWindowHandle(), err + "\r\n");
+    }
+    static throwIfNotFileName() {
+        // ファイル名無しは対象にしない
+        if (!hidemaru.getFileFullPath()) {
+            HmSplitTextFileBySizeUI.outputAlert("ファイル名が付いているファイルのみ対象とします。");
+            HmSplitTextFileBySizeUI.throwCancelException();
+        }
+    }
+    static throwCancelException() {
+        throw "実行をキャンセルしました。";
+    }
+    // レンダリングペインを開く
+    static openRenderPane() {
+        // カレントマクロフォルダのhtmlファイルを使う
+        let absoluteUrl = new URL(HmSplitTextFileBySizeUI.currentmacrodir + "\\" + "HmSplitTextFileBySize.ui.html").href;
+        let idCallback = hidemaru.getFunctionId(HmSplitTextFileBySizeUI.onInputHtmlButtonClick);
+        absoluteUrl += "?strIDCallBack=" + idCallback;
+        const json_arg = {
+            target: HmSplitTextFileBySizeUI.strTargetLabel,
+            uri: absoluteUrl,
+            show: 1,
+            place: "leftside",
+        };
+        renderpanecommand(json_arg);
+    }
+    // 本当にレンダリングペインが開いて準備がととのったのかのチェック
+    static tickCheckComplete() {
+        let readyState = renderpanecommand({ target: HmSplitTextFileBySizeUI.strTargetLabel, get: "readyState" });
+        if (readyState == "complete") {
+            hidemaru.clearInterval(HmSplitTextFileBySizeUI.idIntervalInitialize);
+            HmSplitTextFileBySizeUI.onRenderPaneShown();
+        }
+    }
+    // レンダリングペインに対して、現在のファイルのバイト数を送信する。
+    static tickCheckCloseRenderPane() {
+        let readyState = renderpanecommand({ target: HmSplitTextFileBySizeUI.strTargetLabel, get: "readyState" });
+        if (readyState == "complete") {
+            ;
+        }
+        let isShowNow = renderpanecommand({ target: HmSplitTextFileBySizeUI.strTargetLabel, get: "show" });
+        if (isShowNow == "0") {
+            HmSplitTextFileBySizeUI.clearInitializeInterval();
+            HmSplitTextFileBySizeUI.clearUpdateInterval();
+        }
+    }
+    // レンダリングペインが完全に表示されたら、
+    // このJS内にある「onInputHtmlButtonClick_HmSplitTextFileBySize」関数をレンダリングペインから呼び出せるように関数のIDを渡す。
+    // また、「レンダリングペインを操作するのよ～」ということがわかりやすいように、レンダリングペイン側にフォーカスを移す
+    static onRenderPaneShown() {
+        renderpanecommand({
+            target: HmSplitTextFileBySizeUI.strTargetLabel,
+            focus: 1,
+        });
+    }
+    // HTML側で「ボタン」を押すと、これが呼ばれる
+    static onInputHtmlButtonClick(json_text) {
+        hidemaru.clearInterval(HmSplitTextFileBySizeUI.idIntervalUpdate);
+        renderpanecommand({
+            target: HmSplitTextFileBySizeUI.strTargetLabel,
+            show: 0,
+        });
+        // json_textの状態で、inputフィールドに入っているテキストが渡ってくるので、その数値を渡す
+        let json_obj = JSON.parse(json_text);
+        let nDivFileKiroByteSize = json_obj.input_1;
+        hidemaru.postExecMacroFile(HmSplitTextFileBySizeUI.currentmacrodir + "\\" + "HmSplitTextFileBySize.main.mac", nDivFileKiroByteSize);
+    }
+    static idIntervalInitialize;
+    static idIntervalUpdate;
+    static setItitializeInterval() {
+        // 最初のレンダリングペインCompleteチェック用のものは、比較的細やかにチェックする。
+        HmSplitTextFileBySizeUI.idIntervalInitialize = hidemaru.setInterval(HmSplitTextFileBySizeUI.tickCheckComplete, 300);
+    }
+    static clearInitializeInterval() {
+        if (typeof (HmSplitTextFileBySizeUI.idIntervalInitialize) != "undefined") {
+            hidemaru.clearInterval(HmSplitTextFileBySizeUI.idIntervalInitialize);
+        }
+    }
+    static setUpdateInterval() {
+        // 全体の行数の変化にはおおらかに対応する。
+        HmSplitTextFileBySizeUI.idIntervalUpdate = hidemaru.setInterval(HmSplitTextFileBySizeUI.tickCheckCloseRenderPane, 2000);
+    }
+    static clearUpdateInterval() {
+        if (typeof (HmSplitTextFileBySizeUI.idIntervalUpdate) != "undefined") {
+            hidemaru.clearInterval(HmSplitTextFileBySizeUI.idIntervalUpdate);
+        }
+    }
+}
+try {
+    var objHmSplitTextFileBySizeUI = new HmSplitTextFileBySizeUI();
+}
+catch (err) {
+    HmSplitTextFileBySizeUI.outputAlert(err);
+    if (typeof (objHmSplitTextFileBySizeUI) != "undefined") {
+        objHmSplitTextFileBySizeUI._destructor();
+    }
+}
+
 } // js
 
