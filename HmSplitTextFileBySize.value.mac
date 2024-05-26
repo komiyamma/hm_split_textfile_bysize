@@ -1,5 +1,5 @@
 ﻿/*
- * HmSplitTextFileBySize v1.0.5.5
+ * HmSplitTextFileBySize v1.0.5.6
  *
  * Copyright (c) 2024 Akitsugu Komiyama
  * under the MIT License
@@ -7,7 +7,7 @@
 
 hidemaruversion "9.25.99";
 
-jsmode "WebView2";
+jsmode "WebView2\\HmSplitTextFileBySize";
 
 js {
 
