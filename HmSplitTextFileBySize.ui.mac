@@ -1,5 +1,5 @@
 ﻿/*
- * HmSplitTextFileBySize v1.0.5.3
+ * HmSplitTextFileBySize v1.0.5.5
  *
  * Copyright (c) 2024 Akitsugu Komiyama
  * under the MIT License
@@ -60,12 +60,16 @@ class HmSplitTextFileBySizeUI {
     // レンダリングペインを開く
     static openRenderPane() {
         // カレントマクロフォルダのhtmlファイルを使う
-        let absoluteUrl = new URL(HmSplitTextFileBySizeUI.currentmacrodir + "\\" + "HmSplitTextFileBySize.ui.html").href;
+        let absoluteUrl = new URL(HmSplitTextFileBySizeUI.currentmacrodir + "\\" + "HmSplitTextFileBySize.ui.html");
         let idCallback = hidemaru.getFunctionId(HmSplitTextFileBySizeUI.onInputHtmlButtonClick);
-        absoluteUrl += "?strIDCallBack=" + idCallback;
+        let params = new URLSearchParams();
+        params.set('strIDCallBack', String(idCallback));
+        params.set('strAllByteSize', String(HmSplitTextFileBySizeUI.nFileSizeAtStart));
+        absoluteUrl.search = params.toString();
+        let strUrl = absoluteUrl.href; // オブジェクトから実際のUrl文字列へ
         const json_arg = {
             target: HmSplitTextFileBySizeUI.strTargetLabel,
-            uri: absoluteUrl,
+            uri: strUrl,
             show: 1,
             place: "leftside",
         };
@@ -102,7 +106,7 @@ class HmSplitTextFileBySizeUI {
     }
     // HTML側で「ボタン」を押すと、これが呼ばれる
     static onInputHtmlButtonClick(json_text) {
-        hidemaru.clearInterval(HmSplitTextFileBySizeUI.idIntervalUpdate);
+        HmSplitTextFileBySizeUI.clearUpdateInterval();
         renderpanecommand({
             target: HmSplitTextFileBySizeUI.strTargetLabel,
             show: 0,
