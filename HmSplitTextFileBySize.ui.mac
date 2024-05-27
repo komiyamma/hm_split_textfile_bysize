@@ -10,9 +10,7 @@ hidemaruversion "9.25.99";
 jsmode "WebView2\\HmSplitTextFileBySize";
 
 js {
-if (typeof (objHmSplitTextFileBySizeUI) != "undefined") {
-    objHmSplitTextFileBySizeUI._destructor();
-}
+objHmSplitTextFileBySizeUI?._destructor();
 class HmSplitTextFileBySizeUI {
     static currentmacrodir = currentmacrodirectory();
     // 開始時点でファイルサイズは控えておく
@@ -137,9 +135,7 @@ try {
 }
 catch (err) {
     HmSplitTextFileBySizeUI.outputAlert(err);
-    if (typeof (objHmSplitTextFileBySizeUI) != "undefined") {
-        objHmSplitTextFileBySizeUI._destructor();
-    }
+    objHmSplitTextFileBySizeUI?._destructor();
 }
 
 } // js
