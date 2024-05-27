@@ -22,7 +22,7 @@ class HmSplitTextFileBySizeUI {
     constructor() {
         HmSplitTextFileBySizeUI.throwIfNotFileName();
         HmSplitTextFileBySizeUI.openRenderPane();
-        HmSplitTextFileBySizeUI.setItitializeInterval();
+        HmSplitTextFileBySizeUI.setInitializeInterval();
         HmSplitTextFileBySizeUI.setUpdateInterval();
     }
     _destructor() {
@@ -113,7 +113,7 @@ class HmSplitTextFileBySizeUI {
     }
     static idIntervalInitialize;
     static idIntervalUpdate;
-    static setItitializeInterval() {
+    static setInitializeInterval() {
         // 最初のレンダリングペインCompleteチェック用のものは、比較的細やかにチェックする。
         HmSplitTextFileBySizeUI.idIntervalInitialize = hidemaru.setInterval(HmSplitTextFileBySizeUI.tickCheckComplete, 300);
     }
