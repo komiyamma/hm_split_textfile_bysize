@@ -1,5 +1,5 @@
 ﻿/*
- * HmSplitTextFileBySize v1.0.5.8
+ * HmSplitTextFileBySize v1.0.5.9
  *
  * Copyright (c) 2024 Akitsugu Komiyama
  * under the MIT License
@@ -94,15 +94,22 @@ class HmSplitTextFileBySizeUI {
     }
     // HTML側で「ボタン」を押すと、これが呼ばれる
     static onInputHtmlButtonClick(json_text) {
-        HmSplitTextFileBySizeUI.clearUpdateInterval();
-        renderpanecommand({
-            target: HmSplitTextFileBySizeUI.strTargetLabel,
-            show: 0,
-        });
-        // json_textの状態で、inputフィールドに入っているテキストが渡ってくるので、その数値を渡す
-        let json_obj = JSON.parse(json_text);
-        let nDivFileKiroByteSize = json_obj.input_1;
-        hidemaru.postExecMacroFile(HmSplitTextFileBySizeUI.currentmacrodir + "\\" + "HmSplitTextFileBySize.main.mac", nDivFileKiroByteSize);
+        try {
+            HmSplitTextFileBySizeUI.clearUpdateInterval();
+            renderpanecommand({
+                target: HmSplitTextFileBySizeUI.strTargetLabel,
+                show: 0,
+            });
+            // json_textの状態で、inputフィールドに入っているテキストが渡ってくるので、その数値を渡す
+            let json_obj = JSON.parse(json_text);
+            let nDivFileKiroByteSize = json_obj.input_1;
+            if (nDivFileKiroByteSize == "") {
+                HmSplitTextFileBySizeUI.throwCancelException();
+            }
+            hidemaru.postExecMacroFile(HmSplitTextFileBySizeUI.currentmacrodir + "\\" + "HmSplitTextFileBySize.main.mac", nDivFileKiroByteSize);
+        } catch(err) {
+            HmSplitTextFileBySizeUI.outputAlert(err);
+        }
     }
     static idIntervalInitialize;
     static idIntervalUpdate;
