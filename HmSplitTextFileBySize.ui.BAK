@@ -1,14 +1,6 @@
 <!DOCTYPE html>
 <head>
     <title>HmSplitTextFileBySize</title>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            body {
-                background-color: #223;
-                color: #ddd;
-            }
-        }
-    </style>
 </head>
 <body>
 「<b>何キロバイト</b>」単位で、<br>ファイルを分割しますか？:<br>
