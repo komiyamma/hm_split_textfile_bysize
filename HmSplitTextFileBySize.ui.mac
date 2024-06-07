@@ -1,5 +1,5 @@
 ﻿/*
- * HmSplitTextFileBySize v1.0.6.0
+ * HmSplitTextFileBySize v1.0.6.1
  *
  * Copyright (c) 2024 Akitsugu Komiyama
  * under the MIT License
@@ -104,7 +104,13 @@ class HmSplitTextFileBySizeUI {
             if (nDivFileKiroByteSize == "") {
                 HmSplitTextFileBySizeUI.throwCancelException();
             }
-            hidemaru.postExecMacroFile(HmSplitTextFileBySizeUI.currentmacrodir + "\\" + "HmSplitTextFileBySize.main.mac", nDivFileKiroByteSize);
+            let peRetry = hidemaru.setInterval(()=>{
+                if (hidemaru.isScheduled?.()) return;
+                let success = hidemaru.postExecMacroFile(HmSplitTextFileBySizeUI.currentmacrodir + "\\" + "HmSplitTextFileBySize.main.mac", nDivFileKiroByteSize);
+                if (success === 0) return; // 再挑戦
+                hidemaru.clearInterval(peRetry);
+            }, 100);
+            
         } catch(err) {
             HmSplitTextFileBySizeUI.outputAlert(err);
         }
