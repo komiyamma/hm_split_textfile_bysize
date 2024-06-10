@@ -105,7 +105,6 @@ class HmSplitTextFileBySizeUI {
                 HmSplitTextFileBySizeUI.throwCancelException();
             }
             let peRetry = hidemaru.setInterval(()=>{
-                if (hidemaru.isScheduled?.()) return;
                 let isScheduled = hidemaru.postExecMacroFile(HmSplitTextFileBySizeUI.currentmacrodir + "\\" + "HmSplitTextFileBySize.main.mac", nDivFileKiroByteSize);
                 if (isScheduled === 0) return; // 再挑戦
                 hidemaru.clearInterval(peRetry);
