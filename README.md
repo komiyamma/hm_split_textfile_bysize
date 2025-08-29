@@ -22,4 +22,4 @@ UIなしで直接値で指示する時はこれを編集して自分なりに利
 
 ## 解説サイト
 
-https://秀丸マクロ.net/?page=nobu_tool_hm_split_textfile_byregex
+https://秀丸マクロ.net/?page=nobu_tool_hm_split_textfile_bysize
