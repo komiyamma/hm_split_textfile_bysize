@@ -7,6 +7,8 @@
 
 hidemaruversion "9.25.99";
 
+setcompatiblemode 0x08000000; // マクロ内変数を他と共用しない。
+
 jsmode "WebView2\\HmSplitTextFileBySize";
 js {
 
