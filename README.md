@@ -1,25 +1,61 @@
 # HmSplitTextFileBySize
 
-![Hidemaru 9.25](https://img.shields.io/badge/Hidemaru-v9.25-6479ff.svg)
+秀丸で今開いているファイルを、指定の「キロバイト数」で分割するマクロです。
 
-秀丸で今開いているファイルを、指定の「キロバイト数」で分割する
+## スクリーンショット
+
+![screenshot](https://秀丸マクロ.net/other_soft/hm_split_textfile_bysize/2x/2x_cnt_hm_split_textfile_bysize_01.png)
+
+## 主な機能
+
+*   UI（ダイアログ）を使って、対話的に分割したいファイルサイズ（KB）を指定できます。
+*   マクロ内の値を直接編集することで、UIを使わずに常に同じ設定でファイルを分割することも可能です。
+
+## 動作環境
+
+*   秀丸エディタ v9.25 以上
+
+## ダウンロード
+
+最新版は、以下のサイトからダウンロードできます。
+
+*   [秀丸マクロ.net](https://秀丸マクロ.net/?page=nobu_tool_hm_split_textfile_bysize)
 
 ## インストール
-  
-「HmSplitTextFileBySize.***」と「SplitTextFileBySize.exe」を一緒のフォルダーに入れる
+
+ダウンロードしたzipファイルを解凍し、以下のファイルをすべて同じフォルダーに配置してください。
+
+*   `SplitTextFileBySize.exe`
+*   `HmSplitTextFileBySize.ui.mac`
+*   `HmSplitTextFileBySize.value.mac`
+*   `HmSplitTextFileBySize.main.mac`
+*   `HmSplitTextFileBySize.ui.html`
 
 ## 使い方
 
-### HmSplitTextFileBySize.ui.mac
+**注意点:** 分割されたファイルは、元のファイルと同じフォルダに `ファイル名_001.txt`, `ファイル名_002.txt` ... のように連番で作成されます。意図しない場所にファイルが作成されるのを防ぐため、**専用の作業フォルダに分割したいファイルをコピーしてから実行する**ことをお勧めします。
 
-分割したいテキストファイルを秀丸で開く  
-HmSplitTextFileBySize.ui.mac を 実行する。  
-⇒ 自動で 「ファイル名_001.txt」「ファイル名_002.txt」... といったように連番で分割される。  
+### UIを使ってサイズを指定する場合
 
-### HmSplitTextFileBySize.value.mac
+1.  分割したいテキストファイルを秀丸で開きます。
+2.  `HmSplitTextFileBySize.ui.mac` を実行します。
+3.  表示されたダイアログに、1ファイルあたりのサイズをキロバイト単位で入力し、「分割」ボタンを押します。
 
-UIなしで直接値で指示する時はこれを編集して自分なりに利用してください。
+### マクロで直接サイズを指定する場合
 
-## 解説サイト
+毎回同じサイズで分割するなど、UIが不要な場合はこちらを利用します。
 
-https://秀丸マクロ.net/?page=nobu_tool_hm_split_textfile_bysize
+1.  `HmSplitTextFileBySize.value.mac` をテキストエディタで開きます。
+2.  ファイル内の `SplitSize` 変数の値を、希望のキロバイト数に編集して保存します。
+3.  分割したいテキストファイルを秀丸で開きます。
+4.  編集した `HmSplitTextFileBySize.value.mac` を実行します。
+
+## ライセンス
+
+*   MIT License
+
+## 作者・ソースコード
+
+*   **作者:** 小宮山 晃嗣 (Akitsugu Komiyama)
+*   **ウェブサイト:** [秀丸マクロ.net](https://秀丸マクロ.net/)
+*   **ソースコード:** [Github](https://github.com/komiyamma/hm_split_textfile_bysize)
