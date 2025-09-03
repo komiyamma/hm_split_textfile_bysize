@@ -2,10 +2,6 @@
 
 秀丸で今開いているファイルを、指定の「キロバイト数」で分割するマクロです。
 
-## スクリーンショット
-
-![screenshot](https://秀丸マクロ.net/other_soft/hm_split_textfile_bysize/2x/2x_cnt_hm_split_textfile_bysize_01.png)
-
 ## 主な機能
 
 *   UI（ダイアログ）を使って、対話的に分割したいファイルサイズ（KB）を指定できます。
@@ -53,9 +49,3 @@
 ## ライセンス
 
 *   MIT License
-
-## 作者・ソースコード
-
-*   **作者:** 小宮山 晃嗣 (Akitsugu Komiyama)
-*   **ウェブサイト:** [秀丸マクロ.net](https://秀丸マクロ.net/)
-*   **ソースコード:** [Github](https://github.com/komiyamma/hm_split_textfile_bysize)
