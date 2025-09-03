@@ -48,4 +48,4 @@
 
 より詳しい情報や更新履歴については、以下のサイトをご覧ください。
 
-https://秀丸マクロ.net/?page=nobu_tool_hm_split_textfile_byline
+https://秀丸マクロ.net/?page=nobu_tool_hm_split_textfile_bysize
